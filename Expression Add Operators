@@ -1,0 +1,46 @@
+class Solution {
+    public static ArrayList<String> addOperators(String S, int target) {
+        // code here
+         ArrayList<String> result = new ArrayList<>();
+        if (S == null || S.length() == 0)
+            return result;
+
+        backtrack(result, S, target, new StringBuilder(), 0, 0, 0);
+        return result;
+    }
+
+    private static void backtrack(ArrayList<String> result, String S, int target, StringBuilder expression, int index, long currentVal, long prevVal) {
+        if (index == S.length()) {
+            if (currentVal == target)
+                result.add(expression.toString());
+            return;
+        }
+
+        int len = expression.length();
+        long currNum = 0;
+        for (int i = index; i < S.length(); i++) {
+            if (i != index && S.charAt(index) == '0')
+                break; // Skip leading zeros
+
+            currNum = currNum * 10 + (S.charAt(i) - '0');
+
+            if (index == 0) {
+                expression.append(currNum);
+                backtrack(result, S, target, expression, i + 1, currNum, currNum);
+                expression.setLength(len);
+            } else {
+                expression.append("+").append(currNum);
+                backtrack(result, S, target, expression, i + 1, currentVal + currNum, currNum);
+                expression.setLength(len);
+
+                expression.append("-").append(currNum);
+                backtrack(result, S, target, expression, i + 1, currentVal - currNum, -currNum);
+                expression.setLength(len);
+
+                expression.append("*").append(currNum);
+                backtrack(result, S, target, expression, i + 1, currentVal - prevVal + prevVal * currNum, prevVal * currNum);
+                expression.setLength(len);
+            }
+        }
+    }
+    }
