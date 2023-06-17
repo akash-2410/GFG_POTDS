@@ -11,6 +11,7 @@ class Solution
         for (char c : S.toCharArray()) {
             if (isOperator(c)) {
                 st.push(c);
+                
             }
         }
 
