@@ -1,0 +1,15 @@
+ public int cutRod(int price[], int n) {
+        //code here
+        int dp[] = new int[n+1];
+        dp[0]=0;
+    // traversing for seeing all the possible lengths
+        for(int i=1;i<=n;i++){
+            int maxvalue=Integer.MIN_VALUE;
+            //now all the possible cuts
+            for(int j=1;j<=i;j++){
+                maxvalue=Math.max(maxvalue,price[j-1]+dp[i-j]);
+            }
+            dp[i]=maxvalue;
+        }
+        return dp[n];
+    }
