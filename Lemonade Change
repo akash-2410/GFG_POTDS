@@ -1,0 +1,25 @@
+class Solution {
+    static boolean lemonadeChange(int N, int bills[]) {
+        // code here
+        int five = 0, ten = 0,twenty = 0;
+        for(int i:bills){
+            if(i==5) five++;
+             else if(i==10 && five>0){
+                 five--;
+                 ten++;
+             }
+             else if(i==20 && ten>0 && five >0){
+                 twenty++;
+                 ten--;
+                 five--;
+             }
+             else if(i==20 && five>=3){
+                 twenty++;
+                 five -=3;
+             }
+             else  return false;
+        }
+        
+        return true;
+    }
+}
