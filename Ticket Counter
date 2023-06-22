@@ -1,0 +1,23 @@
+class Solution {
+    public static int distributeTicket(int N,int K)
+    {
+        ArrayList<Integer> queue = new ArrayList<>();
+        for (int i = 1; i <= N; i++) {
+            queue.add(i);
+        }
+        int lastPerson = -1;
+        while (!queue.isEmpty()) {
+            for (int i = 0; i < K; i++) {
+                if (!queue.isEmpty()) {
+                    lastPerson = queue.remove(0);
+                }
+            }
+            for (int i = 0; i < K; i++) {
+                if (!queue.isEmpty()) {
+                    lastPerson = queue.remove(queue.size() - 1);
+                }
+            }
+        }
+            return(lastPerson);
+    }
+}
