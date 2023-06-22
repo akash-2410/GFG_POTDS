@@ -1,0 +1,17 @@
+class Solution
+{
+    static void arrange(long arr[], int n)
+    {
+        // your code here
+       long arrt[]=new long[n];
+        int i=0;
+        for(i=0;i<n;i++)
+        {
+            arrt[i]=arr[(int)arr[i]];
+        }
+        for(i=0;i<n;i++)
+        {
+            arr[i]=arrt[i];
+        }
+     }
+}
