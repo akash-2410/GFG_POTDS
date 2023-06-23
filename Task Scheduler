@@ -1,0 +1,27 @@
+class Solution {
+    static int leastInterval(int N, int K, char tasks[]) {
+        // code here
+        int maxfreq=0;
+        int freq[]=new int[26];
+        for(char t:tasks){
+            freq[t-'A']++;
+        }
+        for(int fre:freq){
+            maxfreq=Math.max(maxfreq,fre);
+        }
+        // Count the number of tasks with max frequency
+        int maxFreqCount =0;
+        for(int fre:freq){
+            if(fre == maxfreq)
+            maxFreqCount++;
+        }
+        // calculate the numbers of intervals reqired for the tasks with the max frequency
+        int intervalForMaxFreqTasks=(maxfreq-1) * (K+1) +maxFreqCount;
+        
+        //claculate the minimum numbers of intervals to execute 
+        int minimumInterval=Math.max(tasks.length,intervalForMaxFreqTasks);
+        
+        return minimumInterval;
+        
+    }
+}
