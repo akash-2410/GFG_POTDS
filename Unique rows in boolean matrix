@@ -1,0 +1,19 @@
+class GfG
+{
+    public static ArrayList<ArrayList<Integer>> uniqueRow(int a[][],int r, int c)
+    {
+        //add code here.
+                //add code here.
+        ArrayList<ArrayList<Integer>> list=new ArrayList<ArrayList<Integer>>();
+        for(int i=0;i<r;i++){
+            ArrayList<Integer> temp=new ArrayList<>();
+            for(int j=0;j<c;j++){
+                temp.add(a[i][j]);
+            }
+            if(!list.contains(temp)){
+                list.add(temp);
+            }
+        }
+        return list;
+    }
+}
