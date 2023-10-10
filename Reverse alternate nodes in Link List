@@ -1,0 +1,40 @@
+class Solution
+{
+    static Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+        Node next;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    public static void rearrange(Node odd)
+    {
+       
+      if (odd == null || odd.next == null) {
+        return;
+       }
+       
+       Node curr = odd;
+       Node temp = odd.next;
+       Node store = temp;
+       
+       while(curr.next!=null && temp.next!=null){
+           
+           curr.next = curr.next.next;
+           curr = curr.next;
+           
+           
+           temp.next = temp.next.next;
+           temp = temp.next;
+           
+       }
+       
+       Node ans = reverse(store);
+       curr.next = ans;
+}
+}
