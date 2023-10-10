@@ -1,0 +1,25 @@
+class Solution
+{
+    String colName (long n)
+    {
+        // your code here
+         String ans = "";
+        while(n!=0)
+        {
+            int mod = (int)(n%26);
+            if(mod == 0)
+            {
+                mod = 26;
+                n=(n/26)-1;
+            }
+            else
+            {
+                n/=26;
+            }
+            mod += 64;
+            char c = (char)mod;
+            ans = c + ans;
+        }
+        return ans;
+    }
+}
