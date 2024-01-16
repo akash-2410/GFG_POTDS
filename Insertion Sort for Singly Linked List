@@ -1,0 +1,36 @@
+class Solution
+{  
+   static Node inssort(Node ans,Node temp){
+       // for the first element to insert and assign null to next 30->null
+       if(ans==null || ans.data>=temp.data){
+           temp.next=ans;
+           ans=temp;
+       }
+       // if element comes in between or last then traverse the list 
+       else {
+         Node temp2=ans;
+         //go on iterating it means we didnt got the node
+            while(temp2.next!=null && temp2.next.data<temp.data){
+                temp2=temp2.next;
+            }
+            //1st add temp=28 -> temp2.next=30
+            temp.next=temp2.next;
+            //then add temp2=23 -> temp2.next=28 -> 30 ->  null
+            temp2.next=temp;
+        }
+        return ans;
+   }
+   
+   public static Node insertionSort(Node head_ref)
+     {
+        //code here
+        Node ans=null;
+        Node temp=head_ref;
+        while(temp!=null){
+            Node nxt=temp.next;
+            ans = inssort(ans,temp);
+            temp=nxt;
+        }
+        return ans;
+    }
+}
