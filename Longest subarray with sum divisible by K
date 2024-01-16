@@ -1,0 +1,27 @@
+class Solution{
+    int longSubarrWthSumDivByK(int a[], int n, int k)
+    {
+        // Complete the function
+        int ans=0,sum=0;
+        HashMap<Integer,Integer> res=new HashMap<>();
+        for(int i=0;i<n;i++){
+            sum+=a[i];
+            int rem=sum%k;
+            if(rem<0){
+                rem+=k;
+            }
+            if(rem==0){
+                ans=i+1;//if rem=0 then only update the index pos and store in ans 
+            }
+            else{
+                if(res.get(rem)!=null){
+                    ans=Math.max(ans,i+1-res.get(rem));// if already present then eg 4-1
+                }
+                else res.put(rem,i+1);//else go on adding the rem and position 
+            }
+        }
+        return ans;
+       
+    }
+ 
+}
