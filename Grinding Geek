@@ -1,0 +1,32 @@
+class Solution {
+    
+    static int solver(int n,int total,int index,int []cost,int [][]dp){
+        if(total<= 0 || index == n) return 0; //check that total should not be 0,and index should not be out of bound
+        if(dp[index][total]!=-1) return dp[index][total]; //if dp already contains the elementsthen return that no need to traverse again
+        
+        // now write what to do if any element is picked
+        int a=0,b=0;
+        if(total>=cost[index]){//totalmoney should be greater than the cost at particular index
+        a++;
+        int temp=total;
+        temp-=cost[index];// subtract from the total left money
+        temp+=(cost[index]*9)/10; //add 90%value to it
+        a+=solver(n,temp,index+1,cost,dp);//recurrsive call for next elements in array
+        }
+        //if not picked the only go on increasing the index
+        b=solver(n,total,index+1,cost,dp);
+        
+        return dp[index][total]=Math.max(a,b);
+    }
+    
+    
+    public int max_courses(int n, int total, int[] cost) {
+        // code here
+        int dp[][]=new int[n][total+1];
+        for(int []i:dp){
+            Arrays.fill(i,-1);
+        }
+        return solver(n,total,0,cost,dp);
+    }
+}
+
