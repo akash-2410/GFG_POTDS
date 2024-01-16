@@ -1,0 +1,16 @@
+class Solution{
+    static int numberSequence(int m, int n)
+    {
+        // code here
+        return seqsolver(1,0,m,n); //passing the value from whwre to start ,and index and two integers
+    }
+    static int seqsolver(int val,int index,int m,int n){
+        if(index==n) return 1;
+        if(val>m) return 0;//eg 16>10 so not possible to take
+        
+        int pick=seqsolver(val*2,index+1,m,n);
+        int not_picked=seqsolver(val+1,index,m,n);
+        
+        return pick+not_picked;
+    }
+}
