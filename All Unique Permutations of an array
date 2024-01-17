@@ -1,0 +1,38 @@
+class Solution {
+    static void solver(ArrayList<Integer> arr,int n, HashSet<ArrayList<Integer>> store,int index){
+     if(index==n){
+         ArrayList<Integer> store2=new ArrayList<>(arr);
+         store.add(store2);
+         return;
+     }        
+     for(int i=index;i<n;i++){
+         int a=arr.get(i);
+         int b=arr.get(index);
+         arr.set(i,b); //swaping the numbers a and b
+         arr.set(index,a);
+         solver(arr,n,store,index+1);//calling for next digit iteration 
+         arr.set(i,a);
+         arr.set(index,b);// reverse swap the indexes 
+     }
+    }
+    static ArrayList<ArrayList<Integer>> uniquePerms(ArrayList<Integer> arr , int n) {
+        // code here
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();
+        HashSet<ArrayList<Integer>> store=new HashSet<>();
+        solver(arr,n,store,0);
+        //now we have to sort the arraylist store and add to ans
+        for(ArrayList<Integer> temp:store) ans.add(temp);
+        Collections.sort(ans, new Comparator<List<Integer>>() {//sorting of ArrayList
+            public int compare(List<Integer> a, List<Integer> b) {
+                int i = 0;
+                while(i<n) {
+                    if(a.get(i).compareTo(b.get(i)) != 0)
+                        return a.get(i).compareTo(b.get(i));
+                    i++;
+                }
+                return 0;
+            }
+        });
+        return ans;
+    }
+};
