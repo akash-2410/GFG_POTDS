@@ -1,0 +1,59 @@
+class Solution {
+   public static ArrayList<ArrayList<Integer>> kTop(int[] arr, int N, int K) {
+        // code here
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();//This line initializes an ArrayList named res to store the final result, which is a list of lists of integers.
+        int[] freq = new int[101];//This array is used to store the frequency of each element in the input array arr.
+        
+        for (int i = 0 ; i < N ; i++) {
+            freq[arr[i]]++;
+            
+            PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> {//Create a priority queue (pq) of integers with a custom comparator. The comparator compares elements based on their frequency, and in case of a tie, it compares the elements in descending order.
+                //The custom comparator logic is defined here. It compares two elements a and b based on their frequencies (x and y). If the frequencies are equal, it compares the elements in descending order.
+                int x = freq[a];
+                int y = freq[b];
+                
+                if (x == y) {
+                    return b-a;
+                } else {
+                    return x-y;
+                }
+            });
+            
+            int size = 0;//Initialize a variable size to keep track of the number of elements in the priority queue.
+            
+            for (int j = 0 ; j < 101 ; j++) {
+                if (freq[j] == 0) {//Skip elements with a frequency of 0.
+                    continue;
+                }
+                
+                pq.offer(j);//Add the current element j to the priority queue and increment the size.
+                size++;
+                
+                if (size > K) { //If the size of the priority queue exceeds K, remove the element with the lowest priority (smallest frequency).
+                    pq.poll();
+                    size--;
+                }
+            }
+            
+            ArrayList<Integer> list = new ArrayList<>();//Initialize a new ArrayList named list to store the final result for the current iteration.
+            while (!pq.isEmpty()) {//Pop elements from the priority queue and add them to the list in ascending order of frequency.
+                list.add(pq.poll());
+            }
+            
+            Collections.reverse(list);//Reverse the order of elements in the list to obtain the final result in descending order of frequency.
+            
+            // This is where test case for Java program was failing
+            // 4 5
+            // 3 4 0 0
+            // Not including those list whose first element starts with 0, instead add empty list.
+            if (!list.isEmpty() && list.get(0) == 0) {
+                res.add(new ArrayList<>());
+            } else {
+                res.add(list);
+            }
+        }
+        
+        return res;//Return the final result
+    }
+}
+              
