@@ -1,0 +1,28 @@
+
+class Solution
+{
+    public static int distributeCandy(Node root) {
+        if (root == null || (root.left == null && root.right == null)) { //check the values if its null or not 
+            return 0;
+        }
+
+        int[] moves = {0}; //to store moves count 
+        solve(root, moves); //calling recursively
+
+        return moves[0];
+    }
+    private static int solve(Node root, int[] moves) {
+        if (root == null) { 
+            return 0;
+        }
+
+        int l = solve(root.left, moves); //for calculating candies and moves on left child
+        int r = solve(root.right, moves);//for calculating candies and moves on right  child
+
+        int totalExtraCandies = (l + r + root.data) - 1; //the candies which child will return or will say  to parents
+
+        moves[0] += Math.abs(l) + Math.abs(r); //taking abs value because it might be possible that child will not caontain any candies so it will return -1 which will refer that there is a need of  candies
+        
+        return totalExtraCandies;//return the candies
+    }
+}
