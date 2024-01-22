@@ -1,0 +1,26 @@
+class Solution
+{
+    public static ArrayList<ArrayList<Integer>> printPaths(Node root, int sum)
+    {
+        // code here
+        ArrayList<Integer> list=new ArrayList<>();//to store the the path giving the sum
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();//to store the paths if we got more than 1 paths 
+        
+        solver(root,sum,list,ans,0);//function call 0 is the starting target sum 
+        
+        return ans;
+    }
+    
+    static void solver(Node root,int sum, ArrayList<Integer> list,ArrayList<ArrayList<Integer>> ans,int targetsum){
+        if(root == null) return;
+        targetsum=targetsum+root.data; //go on doing the sum at each node value
+        list.add(root.data);//add into list also for paths
+        
+        if(targetsum == sum) ans.add(new ArrayList<>(list)); //add paths list to the final answer 
+        
+        solver(root.left,sum,list,ans,targetsum);
+        solver(root.right,sum,list,ans,targetsum);
+        
+        list.remove(list.size()-1);//goon eliminating the last element of the tree
+    }
+}
