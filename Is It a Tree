@@ -1,0 +1,29 @@
+//User function Template for Java
+class Solution {
+    public boolean isTree(int n, int m, ArrayList<ArrayList<Integer>> edges) 
+    {
+        // code here
+        if(n!=m+1) return false; //to check for a cycle is present or not ;if m>= n then cycle is presnt represting the extra edge
+        
+        ArrayList<Integer> adj[]=new ArrayList[n];//for storing addj nodes
+        int visited[] =new int[n];//to store wch node is visited
+        
+        for(int i=0;i<n;i++) adj[i]=new ArrayList<>(); //at each position add new arrayList becuse its given in the form of <<a,b>,<c,d>>
+        
+        for(int i=0;i<m;i++){
+            adj[edges.get(i).get(0)].add(edges.get(i).get(1));//taking from egdes list and adding according to there adjacency
+             adj[edges.get(i).get(1)].add(edges.get(i).get(0));
+        }    
+        dfs(n-1,adj,visited);
+        
+        for(int i=0;i<n;i++)   if(visited[i]==0) return false;
+        
+        return true;
+    }
+    
+    void dfs(int n, ArrayList<Integer> adj[], int visited[]){
+        visited[n]=1; //mark the starting node as visted 
+        
+        for(int x:adj[n]) if(visited[x] == 0) dfs(x,adj,visited); //go on applying dfs for each node if not visied
+    }
+}
