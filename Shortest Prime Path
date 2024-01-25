@@ -1,0 +1,45 @@
+class Solution{
+    int solve(int Num1,int Num2){
+        //code here
+        //using seive algo for finding prime number or not 
+        int prime[] =new int[10000];
+        for(int i=2;i<10000;i++){
+            if(prime[i] == 0){//0 means prime
+            for(int j=i*i;j<10000;j+=i){ //i^2 because from i to i*i there will exist atleast one prime number
+                prime[j]=1;//1 means not prime
+            }
+        }
+     }    
+     
+     int steps[] = new int[10000];
+     Arrays.fill(steps,-1);
+     steps[Num1] = 0; //update the steps for first num to 1
+     
+     Queue<Integer> q =new LinkedList<>();
+     q.add(Num1);// add each prime number we got to the queue
+     
+      while(q.size()>0){
+          int num=q.remove();
+          
+          for(int i=0;i<4;i++){//only 4digit nums are allowed so to traverse throgh each number in full number
+              for(int j=0;j<10;j++){ //there is possibility of filling the numbers between 0-9 sigle digit in one altertion
+                  if(i==0 & j==0) continue;//given non leading zeros 
+                  
+                  String str=Integer.toString(num);//eg 4133 convert to string to easily access each digits in it
+                              //4 from above  + digit to be altered (1 -> 2) +remaining digits(33)
+                  String nstr=str.substring(0,i) + Integer.toString(j) + str.substring(i+1);
+                  int next=Integer.valueOf(nstr);//converted to integer
+                  
+                  if(prime[next]==0 && steps[next] == -1){
+                      steps[next] = 1 + steps[num];
+                      q.add(next);
+                  }
+              }
+          }
+      }
+     
+     return steps[Num2];
+     
+     
+    }
+}
