@@ -1,0 +1,75 @@
+
+class Solution{
+    static String matrixChainOrder(int p[], int n){
+        int[][] m = new int[n][n];
+        int[][] s = new int[n][n];
+
+        
+        for (int L = 2; L < n; L++) {
+            for (int i = 1; i < n - L + 1; i++) {
+                int j = i + L - 1;
+                m[i][j] = Integer.MAX_VALUE;
+                for (int k = i; k < j; k++) {
+                    int cost = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                    if (cost < m[i][j]) {
+                        m[i][j] = cost;
+                        s[i][j] = k;
+                    }
+                }
+            }
+        }
+
+        
+        return ans(s, 1, n - 1);
+    }
+
+    static String ans(int[][] s, int i, int j) {
+        if (i == j) {
+            return String.valueOf((char)('A' + i - 1)); 
+        } else {
+            return "(" + ans(s, i, s[i][j]) + ans(s, s[i][j] + 1, j) + ")";
+        }
+    }
+}
+
+
+
+
+
+
+
+/*class Solution{: This line declares a class named Solution.
+
+static String matrixChainOrder(int p[], int n){: This line declares a static method named matrixChainOrder, which takes two parameters: an array of integers p[] and an integer n. This method returns a String.
+
+int[][] m = new int[n][n];: This line declares a 2D array m of integers with dimensions n x n to store the minimum number of scalar multiplications needed to compute the matrix chain product.
+
+int[][] s = new int[n][n];: This line declares another 2D array s of integers with dimensions n x n to store the split points that give the minimum number of scalar multiplications.
+
+for (int L = 2; L < n; L++) {: This line starts a loop where L represents the chain length (from 2 to n-1). This loop iterates over all possible chain lengths.
+
+for (int i = 1; i < n - L + 1; i++) {: This line starts another loop where i represents the starting index of the chain. It iterates over all possible starting points for the current chain length L.
+
+int j = i + L - 1;: This line calculates the ending index of the chain.
+
+m[i][j] = Integer.MAX_VALUE;: This line initializes the minimum cost of multiplying matrices from index i to index j to the maximum possible integer value, initially.
+
+for (int k = i; k < j; k++) {: This line starts a loop where k represents the point of split for the current chain.
+
+int cost = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];: This line calculates the cost of multiplying matrices from index i to k, from k+1 to j, and multiplying the resulting matrices together.
+
+if (cost < m[i][j]) {: This line checks if the calculated cost is less than the current minimum cost stored in m[i][j].
+
+m[i][j] = cost;: This line updates the minimum cost in m[i][j] if the newly calculated cost is less.
+
+s[i][j] = k;: This line stores the index k which represents the optimal split point for the chain from index i to j.
+
+return ans(s, 1, n - 1);: This line returns the result of the ans method, which computes the optimal sequence of matrix multiplication.
+
+static String ans(int[][] s, int i, int j) {: This line declares a static method named ans which takes three parameters: a 2D array s, and two integers i and j.
+
+if (i == j) {: This line checks if i is equal to j, which means there is only one matrix in the sequence.
+
+return String.valueOf((char)('A' + i - 1));: This line returns a string representing the matrix label, which is calculated based on the index i.
+
+return "(" + ans(s, i, s[i][j]) + ans(s, s[i][j] + 1, j) + ")";: This line recursively constructs the optimal sequence of matrix multiplication by concatenating the results of calling ans method for left and right subproblems and adding parentheses to represent the grouping of matrices.
