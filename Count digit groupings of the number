@@ -1,0 +1,25 @@
+
+class Solution
+{
+    public int TotalCount(String str)
+    {
+        // Code here
+        int n=str.length();
+        int dp[][]=new int[n][901]; //because given in contstrains 100*9
+        for(int temp[]:dp) Arrays.fill(temp,-1);
+        return solver(str,0,0,dp);//passing the str, index from where to start ,prevsum of a subgroup, dp array  
+    }
+    
+    static int solver(String str,int index,int prevsum,int dp[][]){
+        if(index == str.length()) return 1;//only one subgroup
+        if(dp[index][prevsum]!=-1) return dp[index][prevsum];
+        int currsum=0,count=0;
+        for(int i=index;i<str.length();i++){
+            currsum+=str.charAt(i) - '0'; // ascii value bcz given in string and we have to convert to integer
+            if(currsum >= prevsum){
+                count+=solver(str,i+1,currsum,dp);//for next subgroup from next index and currsum will be the prevsum for this group
+            }
+        }
+        return dp[index][prevsum]=count;
+    }
+}
