@@ -1,0 +1,23 @@
+//User function Template for Java
+class Solution {
+  public Node sortedInsert(Node head, int data) {
+        // code here
+       Node ans=new Node(data);//new node for ans 
+       if(head==null){//if head is null then point its next to itself and return itself only
+           ans.next=ans;
+           return ans;
+       }
+       Node curr=head;//
+       Node prev=null;
+       do{
+           prev=curr;//point prev to current
+           curr=curr.next;// point curr to next node 
+           if(data<=curr.data && data>=prev.data)break; // check for valid pos for the data in list if got the pos break 
+       }
+       while(curr!=head);// do while will run till curr not points to head  
+       prev.next=ans;//add the node data to the next of prev node 
+       ans.next=curr;//add the data pointer to the next node  
+       if(data<head.data)return ans;// if data is to be add in last or first then  return the new node added 
+       return head;//else it will return the head containing answer
+    }
+}
