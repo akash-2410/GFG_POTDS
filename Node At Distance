@@ -1,0 +1,66 @@
+----------------------------------------------------------------------------------------------------Question-----------------------------------------------------------------------------------------------------
+Given a binary tree with n nodes and a non-negative integer k, the task is to count the number of special nodes. 
+A node is considered special if there exists at least one leaf in its subtree such that the distance between the node and leaf is exactly k.
+Note: Any such node should be counted only once. For example, if a node is at a distance k from 2 or more leaf nodes, then it would add only 1 to our count.
+
+
+----------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------------------
+Binary tree
+        1
+      /   \
+     2     3
+   /  \   /  \
+  4   5  6    7
+          \ 
+           8
+
+          8
+k = 2
+Output: 
+2
+Explanation: 
+There are only two unique nodes that are at a distance of 2 units from the leaf node.
+(node 3 for leaf with value 8 and node 1 for leaves with values 4, 5 and 7) Note that node 2 isn't considered for leaf with value 8 because it isn't a direct ancestor of node 8.
+
+
+----------------------------------------------------------------------------------------------------Intuition-----------------------------------------------------------------------------------------------------
+1.Using HashSet bcz the node should not contain the duplicate values like as given in question (if a node is at a distance k from 2 or more leaf nodes, then it would add only 1 to our count.) show here we have
+to add only 1 so use hash set to store if any one leaf node we got at same level 
+
+2. use dfs tarversal technique to traverse through each nodes 
+3. Now with dfs gone on checking whether the node is valid or not which means what distance it is at 
+like 1-> 3->6->8 here 8 is leaf node so from 1st node we will go on decreasing the value of k so that  if we found that k==0 and root value is null that means its a leaf node so return the count from the set;
+
+4.Whwther traverse in left direction or in right your choice.
+
+
+-------------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------
+class Solution
+{
+     HashSet<Node> set=new HashSet<>();
+    //Function to return count of nodes at a given distance from leaf nodes.
+    int printKDistantfromLeaf(Node root, int k)
+    {
+        // Write your code here
+       
+        dfs(root,k);//to traverse through every node 
+        return set.size();
+    }
+    
+    void dfs(Node root,int k){
+        if(root==null) return;
+        dfs(root.left,k);
+        if(isValid(root,k)) // check the valid syntax for any node either left or right 
+            set.add(root);
+        dfs(root.right,k);
+    }
+    
+    boolean isValid(Node root,int k){
+        if(root == null) return false;
+        if(root.left==null && root.right==null){
+        return k==0;//which means k is at leaf node as we are decrementing the k from the root from top to bottom going on decreasing 
+        }
+         return isValid(root.left,k-1) || isValid(root.right,k-1);//go on decresing from level by level
+    }
+  
+}
