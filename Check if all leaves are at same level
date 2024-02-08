@@ -1,0 +1,72 @@
+------------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------------
+
+Given a binary tree with n nodes, check if all leaves are at same level or not. Return true/false depending on whether all the leaf nodes are at the same level or not.
+
+
+------------------------------------------------------------------------------------------------------Examples---------------------------------------------------------------------------------------------------------------
+Example 1:
+
+Input: 
+            1
+          /   \
+         2     3
+Output: 
+true
+Explanation: 
+Leaves 2 and 3 are at same level.
+
+------------------------------------------------------------------------------------------------------Intuition---------------------------------------------------------------------------------------------------------------
+
+~Initialization:
+A HashSet named hs is created to store the levels of leaf nodes.
+The solve method is called with the root of the binary tree, an empty HashSet, and the initial level set to 0.
+
+~Traversing the Tree:
+The solve method recursively traverses the binary tree in a depth-first manner.
+At each node, it checks if it's a leaf node. If it is, the level of that leaf node is added to the HashSet.
+If the node is not a leaf node, the method is called recursively for its left and right children with the level incremented by 1.
+
+~Checking Levels:
+After traversing the entire tree, the code checks if there is only one distinct level in the HashSet.
+If all leaf nodes are at the same level, there will be only one entry in the HashSet, indicating that all leaf nodes are at the same depth.
+If there are multiple distinct levels in the HashSet, it means the leaf nodes are at different depths, and the method returns false.
+
+~Returning the Result:
+If there's only one distinct level in the HashSet (i.e., all leaf nodes are at the same level), the method returns true.
+Otherwise, it returns false, indicating that leaf nodes are at different levels.
+
+
+------------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------------
+
+class Solution
+{
+    boolean check(Node root)
+    {
+ HashSet<Integer> hs = new HashSet<>();
+	   solve(root,hs,0);
+	    
+	    return hs.size()==1;//uses not to store duplicate property if at same level it wil only have one 1 size or 1 elementt in it
+    }
+    void solve(Node root,HashSet<Integer> hs,int level){
+        if(root==null) return ;
+        if(root.left==null && root.right==null){
+            hs.add(level);
+            return;
+        }
+        solve(root.left,hs,level+1);
+        solve(root.right,hs,level+1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
