@@ -1,0 +1,56 @@
+---------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+Given a binary tree having n nodes. Check whether all of its nodes have the value equal to the sum of their child nodes. Return 1 if all the nodes in the tree satisfy the given properties, else it return 0.
+
+For every node, data value must be equal to the sum of data values in left and right children. Consider data value as 0 for NULL child.  Also, leaves are considered to follow the property.
+
+---------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+
+Example 1:
+Input:
+Binary tree
+       35
+      /   \
+     20  15
+    /  \  /  \
+   15 5 10 5
+Output: 
+1
+Explanation: 
+Here, every node is sum of its left and right child.
+
+---------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------------
+
+Base Cases: The ChildSum function first checks if the current node is null or a leaf node (a node without any children). 
+If it is, it automatically satisfies the sum property, returning true. This is because there are no child nodes to compare with, so by default, the property holds for this node.
+
+Calculation of Sum: For non-leaf nodes, ChildSum calculates the sum of the values of its left and right child nodes, if they exist.
+
+Comparison: It then compares the sum of the child nodes with the value of the current node. If they are not equal, it means the sum property doesn't hold for this node, so it returns false.
+
+Recursion: If the sum of the child nodes is equal to the value of the current node, the function recursively calls itself for the left and right child nodes. This process repeats until all nodes are checked.
+
+Return Value: If the sum property holds for all nodes in the tree, the ChildSum function returns true for the current node. This ensures that each node and its children satisfy the sum property.
+
+Aggregation: The isSumProperty function simply calls ChildSum on the root node and returns 1 (true) if the property holds for the entire tree, and 0 (false) otherwise.
+
+---------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------
+
+class Solution
+{
+    public static int isSumProperty(Node root)
+    {
+        return ChildSum(root)?1:0;
+    }
+    
+    public static boolean ChildSum(Node root){
+        
+        if(root == null) return true;
+        if(root.left == null && root.right == null) return true;
+        
+        int sum=0;
+        if(root.left!=null) sum+=root.left.data;
+        if(root.right!=null) sum+=root.right.data;
+        
+        return (root.data==sum && ChildSum(root.left) && ChildSum(root.right));
+    }
+}
