@@ -1,0 +1,50 @@
+-----------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------
+
+Given a n x n matrix such that each of its cells contains some coins. Count the number of ways to collect exactly k coins while moving from top left corner of the matrix to the bottom right.
+From a cell (i, j), you can only move to (i+1, j) or (i, j+1).
+
+-----------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------
+
+Input:
+k = 12, n = 3
+arr[] = [[1, 2, 3], 
+       [4, 6, 5], 
+       [3, 2, 1]]
+Output: 
+2
+Explanation: 
+There are 2 possible paths with exactly 12 coins, (1 + 2 + 6 + 2 + 1) and (1 + 2 + 3 + 5 + 1).
+
+-----------------------------------------------------------------------------------------------------Exaplanation---------------------------------------------------------------------------------------------------
+~Take an ans variable to store the count of path.
+~Make a function call which will iterate recursively thorugh the directions 
+~In function check whether the k is postive or not because if -3 or any negative number then it will not sum up to the value of k so return immediately if this occurs
+~Then check the base condition and set the boundaries for the row and col iterations
+~At last check if we are are last element of the matrix where no further executions are made and also check that the value of k is matched with that element or 
+not so that k-that element will be 0 which means we have found one path increament the counter of ans 
+~then go on both directions recursively by subtracting the value of k so that at last k==0 which will means path found else not backtrack again . 
+-----------------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------------
+class Solution {
+    long ans=0;
+    long numberOfPath(int n, int k, int [][]arr) {
+        // code here
+        
+         findpath(0,0,arr,k);
+         return ans;
+    }
+    void findpath(int i,int j,int arr[][],int k){
+        
+        int row=arr.length;
+        int col=arr[0].length;
+        
+        if(k<0) return;
+        if(i>=0 && i<row && j>=0 && j<col){
+            if(i==row-1 && j==col-1 && k==arr[i][j]){
+                ans++;
+            }
+            findpath(i+1,j,arr,k-arr[i][j]);
+            findpath(i,j+1,arr,k-arr[i][j]);
+        }
+        
+    }
+}
