@@ -1,0 +1,88 @@
+------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------------
+A critical connection refers to an edge that, upon removal, will make it impossible for certain nodes to reach each other through any path.
+You are given an undirected connected graph with v vertices and e edges and each vertex distinct and ranges from 0 to v-1, and you have to find all critical connections in the graph.
+It is ensured that there is at least one such edge present.
+
+Note: The answers may be presented in various potential orders. Each edge should be displayed in sorted order. For instance, if there's an edge between node 1 and node 2, 
+it should be stored as (1,2) rather than (2,1). Additionally, it is expected that you store the edges in sorted order.
+
+------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------------
+Input:
+    2<-0->1
+Output:
+0 1
+0 2
+Explanation: 
+On removing edge (0, 1), you will not be able to
+reach node 0 and 2 from node 1. Also, on removing
+edge (0, 2), you will not be able to reach node 0
+and 1 from node 2.
+
+------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+
+The problem statement is about finding all critical connections in an undirected graph using Depth First Search (DFS). A critical connection is a connection (edge) in the graph that, if removed,
+would disconnect the graph into two separate components. The goal is to find all such critical connections and return them in a sorted format (matrix form). 
+The problem also requires handling ancestor nodes appropriately, so as not to push them into the DFS stack multiple times, and to ensure that the parent node is visited before its children.
+
+Here's an approach to solve the problem:
+Create a helper function to push nodes onto the DFS stack, along with their time and parent nodes.
+Use a Depth First Search (DFS) algorithm to traverse the graph.
+Maintain a time variable to keep track of the current time.
+For each node, set its low-link equal to its time.
+If the current node is a root node, increment the time.
+For each adjacent node, check if it has been visited before. If not, recurse on the adjacent node.
+If the current node is not the root node, update its low-link by comparing it with the low-link of its adjacent node.
+After the DFS traversal, check for critical connections by comparing the low-link of each node with the time of its parent node. If the low-link is greater than the time of the parent node, 
+then a critical connection exists between the current node and its parent node.
+Return the critical connections in a sorted matrix form.
+
+------------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------------
+class Solution
+{
+    static int timer=1;
+    static void dfs(int node,ArrayList<ArrayList<Integer>> adj,ArrayList<ArrayList<Integer>> ans,int lowtime[],int parent){
+        lowtime[node]=timer;
+        int parentTime=timer;
+        timer++;
+        for(int x:adj.get(node)){
+            if(x==parent)continue;
+            else if(lowtime[x]==0){
+                dfs(x,adj,ans,lowtime,node);
+            }
+            lowtime[node]=Math.min(lowtime[node],lowtime[x]);
+            if(parentTime<lowtime[x]){
+                ArrayList<Integer> temp = new ArrayList<>();
+                if(node<x){
+                    temp.add(node);
+                    temp.add(x);
+                }
+                else{
+                    temp.add(x);
+                    temp.add(node);
+                }
+                ans.add(temp);
+            }
+        }
+    }
+    public ArrayList<ArrayList<Integer>> criticalConnections(int v, ArrayList<ArrayList<Integer>> adj)
+    {
+        // Code here
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<ArrayList<Integer>>();
+	    int lowtime[] = new int[v];
+	    Arrays.fill(lowtime,0);
+	    timer=1;
+	    dfs(0,adj,ans,lowtime,-1);
+	    Collections.sort(ans,new Comparator<ArrayList<Integer>>(){
+            @Override
+            public int compare(ArrayList<Integer> a, ArrayList<Integer> b) {
+                if(a.get(0)-b.get(0)==0)return a.get(1)-b.get(1);
+                return a.get(0)-b.get(0);
+            }
+        });
+	    return ans;
+    }
+}
+
+
+
+
