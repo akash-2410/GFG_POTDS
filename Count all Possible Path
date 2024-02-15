@@ -1,0 +1,71 @@
+--------------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------
+
+You are presented with an undirected connected graph consisting of n vertices and connections between them represented by an adjacency matrix. 
+Your objective is to determine whether it is possible to start traversing from a node, x, and return to it after traversing all the vertices at least once, using each edge exactly once.
+
+--------------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------
+
+Example 1:
+Input: 
+paths = 0 1 1 1 1
+        1 0 0 1 0
+        1 0 0 1 0
+        1 1 1 0 1
+        1 0 0 1 0
+Output: 1
+Explanation: 
+One can visit the vertices in the following way:
+1->3->4->5->1->4->2->1 (assuming 1-based indexing)
+Here all the vertices has been visited and all
+paths are used exactly once.
+
+--------------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------
+
+The code checks if it is possible to traverse the given paths such that each node has an even degree.
+If each node has an even degree, then it is possible to find a cycle in the graph, where each node in the cycle has an even degree.
+In a cycle, we can keep traversing the same nodes and edges indefinitely, without causing any conflicts.
+The code iterates over each path and counts the number of times each node appears in the path.
+If the count is odd, it means that the node has an odd degree in the graph.
+If a node has an odd degree, then it is not possible to find a cycle where the node has an even degree.
+If a node has an odd degree, then it is not possible to traverse the paths indefinitely, because we will end up at a node with an odd degree, and we will not be able to find a path to traverse from that node to another node.
+Therefore, the code returns 0 to indicate that it is not possible to traverse the paths indefinitely, if a node has an odd degree.
+If all nodes have an even degree, then the code returns 1 to indicate that it is possible to traverse the paths indefinitely.
+
+--------------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------
+
+class Solution
+{
+    public int isPossible(int[][] paths)
+    {
+        // Code here
+        for(int i=0;i<paths.length;i++){
+            int cnt=0;
+              /* for finding the degree of that particular node whether its 
+            odd degree or even(no of edgesis odd till it reaches the start node  or even 
+            till it reaches the start node) */
+            
+            for(int j=0;j<paths[i].length;j++){  
+                cnt+=paths[i][j];
+            }
+            if(cnt%2!=0) //if odd return 0
+            return 0;
+        }
+        return 1;//else 1 even
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
