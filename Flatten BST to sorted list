@@ -1,0 +1,89 @@
+--------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+You are given a Binary Search Tree (BST) with n nodes, each node has a distinct value assigned to it.
+The goal is to flatten the tree such that, the left child of each element points to nothing (NULL), 
+and the right child points to the next element in the sorted list of elements of the BST (look at the examples for clarity). You must accomplish this without using any extra storage,
+except for recursive calls, which are allowed.
+Note: If your BST does have a left child, then the system will print a -1 and will skip it, resulting in an incorrect solution.
+
+-------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------------
+Example 1:
+
+Input:
+          5
+        /    \
+       3      7
+      /  \    /   \
+     2   4  6     8
+Output: 2 3 4 5 6 7 8
+Explanation: 
+After flattening, the tree looks
+like this
+    2
+     \
+      3
+       \
+        4
+         \
+          5
+           \
+            6
+             \
+              7
+               \
+                8
+Here, left of each node points
+to NULL and right contains the
+next node.
+
+-------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------------------
+The flattenBST method takes a binary search tree (BST) root and returns its inorder traversal as a sorted linked list.
+
+A helper node prev is used to keep track of the previous node in the linked list.
+
+The inorder method is used for traversing the BST in a sorted manner (left-node-right or LNR order).
+
+The inorder method takes a current node curr and performs the following steps:
+If curr is null, return without doing anything.
+Recursively traverse the left subtree by calling inorder(curr.left).
+Set the left reference of the previous node to null.
+Set the right reference of the previous node to curr.
+Move the prev node to curr.
+Recursively traverse the right subtree by calling inorder(curr.right).
+Before returning the flattened linked list, the left and right references of the last node in the linked list (pointed by prev) are set to null to avoid any dangling references.
+The temp node is used to return the flattened linked list starting from the second node (as the temp node itself does not have any data).
+The code is an elegant way to convert a binary search tree into a sorted linked list using a helper node prev. The linked list is formed by connecting the right references of nodes,
+while the left references are set to null to avoid any cycles or dangling references
+
+-------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------------
+class Solution {
+    Node prev;
+    void inorder(Node curr){
+        if(curr==null){
+            return ;
+        }
+        inorder(curr.left);// traverse to left
+        prev.left=null; //mark left as null 
+        prev.right=curr;// mark the right to the current element  
+        prev=curr;// now update or move the prev to curr for next 
+        inorder(curr.right);// traverse in right
+    }
+    
+    
+    public Node flattenBST(Node root) {
+        // Code here
+      Node temp = new Node(-1); // creating new node 
+      prev=temp;//pointing prev node to temp
+      
+      inorder(root);//inorder traversal to sort the list
+      prev.left=null;// pointing last node or last list elemnt to null
+      prev.right=null;// pointing last node or last list elemnt to null
+     
+      return temp.right;//returning the start of temp values's data
+    }
+}
+
+
+
+
+
+
