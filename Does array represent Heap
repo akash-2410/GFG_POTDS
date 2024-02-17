@@ -1,0 +1,62 @@
+-------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------------
+Given an array arr of size n, the task is to check if the given array can be a level order representation of a Max Heap.
+
+-------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 6
+arr[] = {90, 15, 10, 7, 12, 2}
+Output: 
+1
+Explanation: 
+The given array represents below tree
+       90
+     /    \
+   15      10
+  /  \     /
+7    12  2
+The tree follows max-heap property as every
+node is greater than all of its descendants.
+
+-------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+The countSub method takes an array arr of integers and its length n as input and returns a boolean indicating whether the array can be a level order traversal of a max heap.
+
+The variable firstidx is initialized to 1 to keep track of the index of the first child in the current level of the max heap.
+
+The for loop iterates through the array from the first element to the second last element, as the last element of a max heap is always the maximum value and is guaranteed to be in its correct position.
+
+For each element arr[i] in the array, the code checks if it is greater than or equal to its children. If it is not, then the array cannot be a level order traversal of a max heap, and the method returns false.
+
+The left child of arr[i] is at index 2 * i + 1, and the right child is at index 2 * i + 2. However, since firstidx keeps track of the index of the first child in the current level, 
+we need to check only the children at indices firstidx and firstidx + 1.
+
+If firstidx is less than n (i.e., there are still children to be checked) and the left child arr[firstidx] is greater than arr[i], then the array cannot be a level order traversal of a max heap, 
+and the method returns false.
+
+Similarly, if firstidx + 1 is less than n (i.e., there is a right child to be checked) and the right child arr[firstidx + 1] is greater than arr[i], then the array cannot be a level order traversal of a max heap, and the method returns false.
+
+If all elements pass the check, then the method returns true.
+
+-------------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    
+    public boolean countSub(long arr[], long n)
+    {
+        // Your code goes here
+        int firstidx=1;
+        for(int i=0;i<n;i++){
+            if(firstidx<n && arr[firstidx]>arr[i]) return false;
+            if(firstidx+1<n && arr[firstidx+1]>arr[i]) return false;
+            firstidx+=2;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
+
