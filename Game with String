@@ -1,0 +1,56 @@
+----------------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+Given a string s of lowercase alphabets and a number k, the task is to print the minimum value of the string after removal of k characters.
+The value of a string is defined as the sum of squares of the count of each distinct character present in the string
+
+----------------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------------
+
+Example 1:
+Input: 
+s = abccc, k = 1
+Output: 
+6
+Explaination:
+We remove c to get the value as 12 + 12 + 22
+
+----------------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------------------
+First, we calculate the frequency of each character in the string. We use an array freq[] of size 26 (as there are 26 letters in the English alphabet) to store the frequency of each character.
+
+We initialize a priority queue (pq) using the Collections.reverseOrder() comparator. This priority queue will be used to store the frequencies of the characters in the string. The priority queue is implemented as a max heap, meaning that the maximum frequency is always at the top of the heap.
+
+We iterate over the characters in the string and add each character's frequency to the priority queue. We only add the frequency to the priority queue if it is non-zero. This is because we are only interested in the characters that are present in the string.
+
+We remove k characters from the priority queue. For each character that we remove, we decrease its frequency by 1 and add it back to the priority queue. We repeat this process until we have removed k characters.
+
+Finally, we calculate the minimum cost to remove the k characters. We iterate over the remaining frequencies in the priority queue and add the square of each frequency to the total cost.
+
+We return the total cost as the minimum cost to remove k characters from the string.
+
+---------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------------
+
+class Solution{
+    static int minValue(String s, int k){
+        // code here
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder()); // for max heap using pq;
+        int freq[]=new int[26];
+        Arrays.fill(freq,0);
+        for(int i=0;i<s.length();i++){
+            freq[s.charAt(i)-'a']++;
+        }
+        for(int i=0;i<26;i++){
+            if(freq[i] != 0) pq.add(freq[i]); // those are present in the freq add only those char to the pq
+        }
+        //removal of k characters and creating new heap 
+        while(k!=0){
+            int temp=pq.remove();
+            temp--;
+            pq.add(temp);
+            k--;
+        }
+        int ans=0;
+       while(pq.size()!=0){
+          int temp=pq.remove();
+          ans+=temp*temp;
+       }
+       return ans;
+    }
+}
