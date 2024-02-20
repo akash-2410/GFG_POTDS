@@ -1,0 +1,46 @@
+---------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.
+Return 1 if it is possible to break A into sequence of dictionary words, else return 0. 
+
+Note: From the dictionary B each word can be taken any number of times and in any order.
+---------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 6
+B = { "i", "like", "sam", "sung", "samsung", "mobile"}
+A = "ilike"
+Output:
+1
+Explanation:
+The string can be segmented as "i like".
+---------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+Convert the list B of words into a set for efficient lookup.
+
+Initialize a boolean array dp of size A.length() + 1. The extra cell is for the empty substring at the beginning of A. Set dp[0] to true, indicating that the empty substring can always be segmented.
+
+Iterate through the characters of A from index 1 to A.length(). For each character at index i, iterate through the previous characters from index 0 to i-1.
+
+For each pair of indices (j, i), check if the substring of A from index j to i-1 can be segmented into words from B. This is done by checking if dp[j] is true (indicating that the substring from index 0 to j-1 can be segmented) and if the substring from index j to i-1 is present in the set wordSet. If both conditions are met, set dp[i] to true and break out of the inner loop.
+
+After the iteration, check the value of dp[A.length()]. If it is true, return 1; otherwise, return 0.
+
+---------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------
+
+class Solution {
+    public int wordBreak(String A, ArrayList<String> B) {
+        Set<String> wordSet = new HashSet<>();
+        wordSet.addAll(B);
+        
+        boolean[] dp = new boolean[A.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= A.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.contains(A.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[A.length()] ? 1 : 0;
+    }
+}
