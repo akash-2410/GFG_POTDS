@@ -1,0 +1,83 @@
+---------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+Given a boolean expression s of length n with following symbols.
+Symbols
+    'T' ---> true
+    'F' ---> false
+and following operators filled between symbols
+Operators
+    &   ---> boolean AND
+    |   ---> boolean OR
+    ^   ---> boolean XOR
+Count the number of ways we can parenthesize the expression so that the value of expression evaluates to true.
+
+Note: The answer can be large, so return it with modulo 1003
+
+---------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 7
+s = T|T&F^T
+Output: 
+4
+Explaination: 
+The expression evaluates to true in 4 ways ((T|T)&(F^T)), (T|(T&(F^T))), (((T|T)&F)^T) and (T|((T&F)^T)).
+
+---------------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------------------
+The countWays function is the main function that takes the length of the expression n and the expression string s. It initializes the 3D dynamic programming array dp with -1.
+
+The solve function is a recursive function that calculates the number of ways to parenthesize the expression from index i to j such that the resulting expression evaluates to true. T
+he isTrue parameter is used to determine whether the current expression should evaluate to true or false.
+
+The solve function uses a loop to iterate over all possible split points k between i and j. It recursively calls itself to calculate the number of ways to parenthesize the left and right sub-expressions.
+
+The solve function then checks the operator at index k in the expression string. If the operator is '&',
+it calculates the number of ways to parenthesize the expression such that the left sub-expression evaluates to true and the right sub-expression evaluates to true. 
+If the operator is '|', it calculates the number of ways to parenthesize the expression such that at least one of the left or right sub-expressions evaluates to true. If the operator is '^', 
+it calculates the number of ways to parenthesize the expression such that exactly one of the left or right sub-expressions evaluates to true.
+
+The solve function then returns the total number of ways to parenthesize the expression modulo 1003.
+
+The countWays function finally calls the solve function with i set to 0, j set to n - 1, and isTrue set to 1.
+It returns the number of ways to parenthesize the expression such that the resulting expression evaluates to true modulo 1003.
+
+---------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------
+class Solution{
+    static int[][][] dp;
+    
+    static int countWays(int n, String s){
+        dp = new int[n][n][2];
+        for (int[][] d1 : dp) {
+            for (int[] d2 : d1) {
+                Arrays.fill(d2, -1);
+            }
+        }
+         return solve(s, 0, n - 1, 1) % 1003;
+    }
+     static int solve(String str, int i, int j, int isTrue) {
+        if (i > j) return 0;
+        if (i == j) return (str.charAt(i) == (isTrue == 1 ? 'T' : 'F')) ? 1 : 0;
+         if (dp[i][j][isTrue] != -1) return dp[i][j][isTrue];
+        int temp_ans = 0;
+
+        for (int k = i + 1; k <= j - 1; k += 2) {
+            int lt = solve(str, i, k - 1, 1);
+            int lf = solve(str, i, k - 1, 0);
+            int rt = solve(str, k + 1, j, 1);
+            int rf = solve(str, k + 1, j, 0);
+
+            if (str.charAt(k) == '&') {
+                temp_ans += (isTrue == 1) ? (lt * rt) : (lt * rf + lf * rt + lf * rf);
+            } else if (str.charAt(k) == '|') {
+                temp_ans += (isTrue == 1) ? (lt * rt + lt * rf + lf * rt) : (lf * rf);
+            } else if (str.charAt(k) == '^') {
+                temp_ans += (isTrue == 1) ? (lt * rf + lf * rt) : (lt * rt + lf * rf);
+            }
+        }
+
+        return dp[i][j][isTrue] = temp_ans % 1003;
+    }
+}
+
+
+
+
