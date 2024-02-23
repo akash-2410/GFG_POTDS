@@ -1,0 +1,53 @@
+----------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------
+
+In daily share trading, a buyer buys shares in the morning and sells them on the same day. 
+If the trader is allowed to make at most 2 transactions in a day, the second transaction can only start after the first one is complete (buy->sell->buy->sell). 
+The stock prices throughout the day are represented in the form of an array of prices. 
+
+Given an array price of size n, find out the maximum profit that a share trader could have made.
+
+----------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 6
+prices[] = {10,22,5,75,65,80}
+Output:
+87
+Explanation:
+Trader earns 87 as sum of 12, 75 Buy at 10, sell at 22, Buy at 5 and sell at 80.
+
+----------------------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------------------
+Initialize the variables firstBuy, firstSell, secondBuy, and secondSell to store the maximum profit that can be made with at most one transaction and at most two transactions.
+Iterate over the price array and for each index i, calculate the maximum profit that can be made by buying at i and selling at j (where j > i) for both the first and second transactions.
+For the first transaction, update firstBuy and firstSell variables based on the maximum profit that can be made by buying at i and selling at j.
+For the second transaction, update secondBuy and secondSell variables based on the maximum profit that can be made by buying at i and selling at j after the first transaction is complete.
+Return secondSell as the maximum profit that can be made with at most two transactions.
+
+----------------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------------
+class Solution {
+    public static int maxProfit(int n, int[] price) {
+ if (n <= 1)
+            return 0;
+
+        // Initialize the variables to store the maximum profit
+        int firstBuy = Integer.MIN_VALUE;
+        int firstSell = 0;
+        int secondBuy = Integer.MIN_VALUE;
+        int secondSell = 0;
+
+        for (int i = 0; i < n; i++) {
+            // Update the variables for the first transaction
+            firstBuy = Math.max(firstBuy, -price[i]);
+            firstSell = Math.max(firstSell, firstBuy + price[i]);
+            // Update the variables for the second transaction
+            secondBuy = Math.max(secondBuy, firstSell - price[i]);
+            secondSell = Math.max(secondSell, secondBuy + price[i]);
+        }
+
+        // Return the maximum profit achievable after the second transaction
+        return secondSell;
+    }
+}
+       
+
+
