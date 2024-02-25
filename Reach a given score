@@ -1,0 +1,42 @@
+-----------------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+
+Consider a game where a player can score 3 or 5 or 10 points in a move. Given a total score n, find number of distinct combinations to reach the given score.
+
+-----------------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------------
+Example 1:
+Input
+n = 10
+Output
+2
+Explanation
+There are two ways {5,5} and {10}.
+
+-----------------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------------------
+Dynamic Programming (DP) Approach: The code utilizes dynamic programming to efficiently compute the number of ways to reach a given number n using specific moves (3, 5, and 10 in this case).
+
+Initialization: The dp array is initialized to store the number of ways to reach each position up to n. dp[0] is set to 1 because there is one way to make 0 using the given moves: by not moving at all.
+
+Looping through Moves: The code iterates through each possible move size (3, 5, and 10) to consider all possible combinations of moves.
+
+Updating DP Array: For each move size, the code iterates through the dp array from the current move size to n. At each position i, it updates dp[i] by adding the number of ways to reach i - move, where move represents the current move size being considered.
+
+Accumulating Ways: By updating the dp array in this manner for each move size, the code accumulates the number of ways to reach each position i using the given moves.
+
+Returning Result: Finally, the code returns dp[n], which represents the number of ways to reach the desired position n using the specified moves.
+
+-----------------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------------------
+
+class Geeks {
+    public long count(int n) {
+        // Add your code here.
+         long[] dp = new long[n + 1];
+        dp[0] = 1;
+        int[] moves = {3, 5, 10};
+        for (int move : moves) {
+            for (int i = move; i <= n; i++) {
+                dp[i] += dp[i - move];
+            }
+        }
+        return dp[n];
+    }
+}
