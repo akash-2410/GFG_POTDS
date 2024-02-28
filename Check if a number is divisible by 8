@@ -1,0 +1,28 @@
+--------------------------------------------------------------------------------------------------Question-----------------------------------------------------------------------------------------------------------
+Given a string representation of a decimal number s, check whether it is divisible by 8.
+--------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+s = "16"
+Output:
+1
+Explanation:
+The given number is divisible by 8,
+so the driver code prints 1 as the output.
+
+--------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------------
+class Solution{
+    int DivisibleByEight(String s){
+        //code here
+        int num=0;
+             /*using the rule which says  check last 3 digits
+        of the number if they are dividb;le by 8 then the s should be divislbe by 8*/
+        int i=s.length()-3>=0?s.length()-3:0;
+   
+        while(i<s.length()){
+            num=num*10+(s.charAt(i)-'0');//i=1,2,3
+            i++;
+        }
+        return num%8==0?1:-1;
+    }
+}
