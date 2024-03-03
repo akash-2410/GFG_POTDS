@@ -1,0 +1,38 @@
+----------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------------
+Given an array of strings arr[] of length n representing non-negative integers, arrange them in a manner, such that, after concatanating them in order, 
+it results in the largest possible number. Since the result may be very large, return it as a string.
+----------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 5
+arr[] =  {"3", "30", "34", "5", "9"}
+Output: "9534330"
+Explanation: 
+Given numbers are  {"3", "30", "34", "5", "9"}, 
+the arrangement "9534330" gives the largest value.
+----------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------------------------
+class Solution {
+    String printLargest(int n, String[] arr) {
+        Comparator<String> cmp=(A,B) ->{
+            String AB=A+B;
+            String BA=B+A;
+            return BA.compareTo(AB);
+        };
+        
+         // Sort the array using the custom comparator
+        Arrays.sort(arr, cmp);
+        
+        //Concatenate the sorted array to get the largest possible number
+        StringBuilder ans=new StringBuilder();
+        for(String i:arr){
+            ans.append(i);
+        }
+        
+        // Handle leading zeros
+        if(ans.charAt(0)=='0'){
+            return "0";
+        }
+        return ans.toString();
+    }
+}
+
