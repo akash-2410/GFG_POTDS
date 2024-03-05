@@ -1,0 +1,77 @@
+------------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------
+Given an array a of n positive integers. The task is to find the maximum of j - i subjected to the constraint of a[i] < a[j] and i < j.
+
+------------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 2
+a[] = {1, 10}
+Output:
+1
+Explanation:
+a[0] < a[1] so (j-i) is 1-0 = 1
+
+Example 2:
+Input:
+n = 9
+a[] = {34, 8, 10, 3, 2, 80, 30, 33, 1}
+Output:
+6
+Explanation:
+In the given array a[1] < a[7] satisfying the required condition(a[i] < a[j]) thus giving the maximum difference of j - i which is 6(7-1).
+
+------------------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------------
+int x=0 and int y=n-1: These lines initialize the left and right pointers of the subarray.
+int idx=0: This line initializes the length of the longest increasing subarray to 0.
+while(x<=y): This loop continues until the left pointer is greater than the right pointer.
+if(a[x]<=a[y]): This condition checks if the element at the left pointer is less than or equal to the element at the right pointer.
+If true, then we have found a potential increasing subarray. We update idx to the maximum of its current value and the difference between the right and left pointers (y-x). 
+This is because the length of the increasing subarray is equal to y-x+1.
+Then, we increment the left pointer by 1 to move to the next element.
+We also reset the right pointer to the last index of the array (n-1), so that we can find the next potential increasing subarray starting from the current left pointer.
+If the condition in step 4 is false, then we know that the element at the left pointer is greater than the element at the right pointer.
+In this case, we decrement the right pointer by 1 to move to the next element.
+After the while loop, we return the length of the longest increasing subarray (idx).
+
+------------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------
+class Solution{
+    
+    // A[]: input array
+    // N: size of array
+    // Function to find the maximum index difference.
+    static int maxIndexDiff(int a[], int n) { 
+        
+        // Your code here
+        /*  Gives TLE
+      int idx=0;
+         for(int i=0;i<n-1;i++){
+            for(int j=n-1;j>i;j--){
+                 if(a[i]<=a[j]){
+                  idx=Math.max(idx,j-i);
+                 }
+            }
+         }
+         return idx;*/
+
+Correct Code:
+        int x=0;
+        int y=n-1;
+        int idx=0;
+        
+        while(x<=y){
+            if(a[x]<=a[y]){
+                idx=Math.max(idx,y-x);
+                x++;
+                y=n-1;
+            }else{
+                y--;
+            }
+            
+        }
+        return idx;
+        
+    }
+}
+
+
+
