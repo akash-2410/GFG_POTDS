@@ -1,0 +1,105 @@
+------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------------
+Given two strings, one is a text string and other is a pattern string. The task is to print the indexes of all the occurences of pattern string in the text string. 
+For printing, Starting Index of a string should be taken as 1. The strings will only contain lowercase English alphabets ('a' to 'z').
+
+------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+text = "birthdayboy"
+pattern = "birth"
+Output: 
+[1]
+Explanation: 
+The string "birth" occurs at index 1 in text.
+--------------------------------------------------------------------------------------------Approach 1 with code--------------------------------------------------------------------------------------------------
+class Solution
+{
+    
+    ArrayList<Integer> search(String pattern, String text)
+    {
+        // your code here
+        
+        ArrayList<Integer> res = new ArrayList<>();
+        
+        int tlen = text.length();
+        int plen = pattern.length();
+        
+        for(int i=0; i<=(tlen-plen); i++) {
+            if(text.substring(i, i+plen).equals(pattern)) res.add(i+1);
+        }
+        
+        return res;
+    }
+}
+
+-------------------------------------------------------------------------------------------Approach 2 with code---------------------------------------------------------------------------------------------------
+//USing Hash Values (Sliding window) Rabin-Karp Algorithm
+
+class Solution
+{
+    int d = 26 ; // d is the number of characters in the input alphabet
+    int q =1001; // q -> A prime number
+    ArrayList<Integer> search(String pat, String txt)
+    {
+      int h = 1  ;
+       ArrayList<Integer> ans = new ArrayList<>();
+       int n = txt.length()  ;
+       int m = pat.length() ;
+       
+       for(int i = 1;i<=m-1 ;i++) // The value of h would be "pow(d, M-1)%q"
+         h = (d*h)%q ;
+         
+         int p = 0 , t = 0 ; // hash value for pattern and hash value for txt
+
+        // Calculate the hash value of pattern and first
+        // window of text
+        
+         for(int i = 0 ;i<m ;i++)
+         {
+             p = (p*d+pat.charAt(i))%q ;
+             t = (t*d+txt.charAt(i))%q ;
+         }
+           // Slide the pattern over text one by one
+         for(int i = 0;i<=n-m;i++)
+         {
+         
+            // Check the hash values of current window of
+            // text and pattern. If the hash values match
+            // then only check for characters one by one
+            
+             if(p==t)
+             {
+                 boolean flag = true ;
+                 
+                 // Check for characters one by one 
+                for(int j = 0 ;j<m;j++){
+                     if(pat.charAt(j)!=txt.charAt(i+j))
+                     {
+                         flag = false;
+                         break;
+                     }
+                     
+                 }
+                 // if p == t and pat[0...M-1] = txt[i, i+1,
+                // ...i+M-1] paterrn  found
+                 if(flag)
+                 ans.add(i+1);
+                 
+             }
+             / Calculate hash value for next window of text:
+            // Remove leading digit, add trailing digit
+            
+             if(i<n-m)
+             {
+                 t = (d*(t-txt.charAt(i)*h)+txt.charAt(i+m))%q ;
+                 
+                 // We might get negative value of t,
+                // converting it to positive
+                if(t<0)
+                t += q ;
+             }
+         }
+         
+         return ans;
+    }
+}
