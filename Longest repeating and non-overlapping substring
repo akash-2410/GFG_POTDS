@@ -1,0 +1,43 @@
+------------------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+Given a string s of length n, find the longest repeating non-overlapping substring in it. In other words find 2 identical substrings of maximum length which do not overlap. 
+Return the longest non-overlapping substring. Return "-1" if no such string exists.
+
+Note: Multiple Answers are possible but you have to return the substring whose first occurrence is earlier.
+
+For Example: "abhihiab", here both "ab" and "hi" are possible answers. But you will have to return "ab" because it's first occurrence appears before the first occurrence of "hi".
+------------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------------------
+Input:
+n = 9
+s = "acdcdacdc"
+Output:
+"acdc"
+Explanation:
+The string "acdc" is the longest Substring of s which is repeating but not overlapping.
+------------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------
+class Solution {
+    static String longestSubstring(String s, int n) {
+        // code here
+
+        int dp[][]=new int[n+1][n+1];
+        int idx=0,max=-1;
+        for(int i=1;i<=n;i++){
+            for(int j=i+1;j<=n;j++){
+                if(s.charAt(i-1)==s.charAt(j-1)&& j-i>dp[i-1][j-1]){
+                    dp[i][j]=1+dp[i-1][j-1]; //Update the length of the current substring
+                    if(dp[i][j]>max){ // Update the maximum length and the starting index of the longest substring
+                        max=dp[i][j];
+                        idx=Math.max(i,max);
+                    }
+                }
+            }
+        }
+        //If there are any non-empty substrings with no repeating characters, return the longest substring found
+
+        if(max>0){
+        String ans=s.substring(idx-max,idx);
+        return ans;
+        }
+        return "-1";
+    }
+};
+
