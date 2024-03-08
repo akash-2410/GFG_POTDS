@@ -1,0 +1,102 @@
+--------------------------------------------------------------------------------------------------Question-----------------------------------------------------------------------------------------------------------
+Given a string str, a partitioning of the string is a palindrome partitioning if every sub-string of the partition is a palindrome. 
+Determine the fewest cuts needed for palindrome partitioning of the given string.
+--------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------------------------
+Example 1:
+Input: str = "ababbbabbababa"
+Output: 3
+Explaination: After 3 partitioning substrings 
+are "a", "babbbab", "b", "ababa".
+------------------------------------------------------------------------------------------Intution || Explanation---------------------------------------------------------------------------------------------------
+The palindromicPartition function initializes an integer array arr of size n+1, where n is the length of the input string. 
+The arr array is used to store the minimum number of cuts required to partition the string into palindromic substrings.
+The arr[0] element is initialized to 0, as no cuts are required to partition an empty string.
+
+The solution iterates over each character of the input string. For each character i, it initializes a variable min to a large number (1e9). I
+t then iterates over all the characters to the left of i (from i to 0, inclusive). For each character j, it checks if the substring from j to i is a palindrome using the inPalindrome function. 
+If the substring is a palindrome, it increments the number of cuts required by 1 and adds it to the min variable.
+
+After iterating over all the characters and checking all possible substrings,
+the solution stores the minimum number of cuts required to partition the string into palindromic substrings in the arr array. 
+The arr[n] element represents the minimum number of cuts required to partition the entire string into palindromic substrings.
+
+The inPalindrome function checks if a substring is a palindrome. It iterates over the characters of the substring from both ends. 
+If any pair of characters does not match, it returns false. If all pairs of characters match, it returns true.
+
+The time complexity of the solution is O(n^3), where n is the length of the input string.
+This is because for each character, the solution iterates over all the characters to its left and checks if the substring from the current character to the leftmost character is a palindrome. 
+The space complexity of the solution is O(n), where n is the length of the input string.
+This is because the solution uses an array of size n+1 to store the minimum number of cuts required for each possible partition of the string.
+
+Dry Run Explanation:
+dry run of the palindromicPartition function for the input string "aab":
+
+Initialize n to the length of the string, which is 3.
+Initialize arr to an array of size n+1 with all elements initialized to 0.
+Iterate through the string with i from 0 to 2.
+
+At the first iteration, i is 0.
+Set min to 1e9.
+Iterate through the string with j from 0 to 0.
+At the first iteration, j is 0.
+Check if the substring from index j to i is a palindrome by calling inPalindrome(0, 0, "aab").
+Since the substring is a palindrome, set res to 1 + arr[j], which is 1 + 0 = 1.
+Update min to the minimum of min and res, which is 1.
+Since j is not greater than i, break the inner loop.
+Set arr[1] to min, which is 1.
+
+At the second iteration, i is 1.
+Set min to 1e9.
+Iterate through the string with j from 1 to 0.
+At the first iteration, j is 1.
+Check if the substring from index j to i is a palindrome by calling inPalindrome(1, 1, "aab").
+Since the substring is a palindrome, set res to 1 + arr[j], which is 1 + 1 = 2.
+Update min to the minimum of min and res, which is 2.
+Since j is not greater than i, break the inner loop.
+Set arr[2] to min, which is 2.
+
+At the third iteration, i is 2.
+Set min to 1e9.
+Iterate through the string with j from 2 to 0.
+At the first iteration, j is 2.
+Check if the substring from index j to i is a palindrome by calling inPalindrome(2, 2, "aab").
+Since the substring is a palindrome, set res to 1 + arr[j], which is 1 + 2 = 3.
+Update min to the minimum of min and res, which is 3.
+At the second iteration, j is 1.
+Check if the substring from index j to i is a palindrome by calling inPalindrome(1, 2, "aab").
+Since the substring is not a palindrome, continue to the next iteration.
+Since j is not greater than i, break the inner loop.
+Set arr[3] to min, which is 3.
+Return arr[n] - 1, which is 3 - 1 = 2.
+-------------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------
+
+class Solution{
+    static int palindromicPartition(String str)
+    {
+       int n= str.length();
+       int arr[] = new int[n+1];
+       arr[0] = 0;
+        
+        for(int i=0; i<n; i++){
+            int min = (int)(1e9);
+            for(int j=i; j>=0; j--){
+                if(inPalindrome(j, i, str)){
+                    int res = 1+arr[j];
+                    min = Math.min(res, min);
+                }
+            }
+            arr[i+1] = min;
+        }
+        return arr[n]-1;
+        
+    }
+    
+    static boolean inPalindrome(int i, int j, String str){
+        while(i<j){
+            if(str.charAt(i) != str.charAt(j)) return false;
+            i++;
+            j--;
+        }
+        return true;
+    }
+}
