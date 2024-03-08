@@ -1,0 +1,56 @@
+--------------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------
+Given a string s which contains only lower alphabetic characters, check if it is possible to remove at most one character from this string in such a way that frequency of each distinct character
+becomes same in the string. Return true if it is possible to do else return false.
+
+Note: The driver code print 1 if the value returned is true, otherwise 0
+--------------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+s = "xyyz"
+Output: 
+1 
+Explanation: 
+Removing one 'y' will make frequency of each character to be 1.
+----------------------------------------------------------------------------------------------------Code with approach----------------------------------------------------------------------------------------------------
+
+class Solution {
+        // code here
+     boolean sameFreq(String s) {
+     
+     Map<Character, Integer> frequencyMap = new HashMap<>();
+
+        // Count the frequency of each character
+        for (char c : s.toCharArray()) {
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        }
+
+        // Count the frequency of frequencies
+        Map<Integer, Integer> freqCount = new HashMap<>();
+        for (int freq : frequencyMap.values()) {
+            freqCount.put(freq, freqCount.getOrDefault(freq, 0) + 1);
+        }
+
+        // If there is only one frequency, then it's already the same
+        if (freqCount.size() == 1) {
+            return true;
+        }
+
+        // If there are two frequencies, check if one of them is 1 and the other is the maximum
+        if (freqCount.size() == 2) {
+            int minFreq = Collections.min(freqCount.keySet());
+            int maxFreq = Collections.max(freqCount.keySet());
+
+            // If the frequency difference is 1 and the minimum frequency occurs only once, return true
+            if ((maxFreq - minFreq == 1 && freqCount.get(maxFreq) == 1) || (minFreq == 1 && freqCount.get(minFreq) == 1)) {
+                return true;
+            }
+        }
+
+        return false;
+     }
+}
+
+
+
+
+
