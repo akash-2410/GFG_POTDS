@@ -1,0 +1,39 @@
+-------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+Given a binary string s. Perform r iterations on string s, where in each iteration 0 becomes 01 and 1 becomes 10. 
+Find the nth character (considering 0 based indexing) of the string after performing these r iterations (see examples for better understanding).
+
+-------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+s = "1100"
+r = 2
+n = 3
+Output:
+1
+Explanation: 
+After 1st iteration s becomes "10100101".
+After 2nd iteration s becomes "1001100101100110".
+Now, we can clearly see that the character at 3rd index is 1, and so the output.
+
+-------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------------
+class Solution
+{
+    public char nthCharacter(String s, int r, int n)
+    {
+        //code here
+        while(r-- > 0){
+            String ans="";
+            for(int i=0;i < Math.min(s.length(),n+1); i++){
+                if(s.charAt(i) =='1'){
+                    ans+="10";
+                }
+                else {
+                    ans+="01";
+                }
+            }
+            s=ans;
+        }
+        return s.charAt(n);
+    }
+}
+
