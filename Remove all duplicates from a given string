@@ -1,0 +1,28 @@
+-----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------------
+
+Given a string str which may contains lowercase and uppercase chracters. 
+The task is to remove all duplicate characters from the string and find the resultant string. The order of remaining characters in the output should be same as in the original string.
+
+-----------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+str = "geEksforGEeks"
+Output: 
+"geEksforG"
+Explanation: 
+After removing duplicate characters such as E, e, k, s, we have string as "geEksforG".
+-----------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------------------
+
+class Solution {
+    String removeDuplicates(String str) {
+     StringBuilder ans=new StringBuilder();
+     HashMap<Character,Integer> freq=new HashMap<>();
+     for(int i=0;i<str.length();i++){
+         if(freq.get(str.charAt(i))==null){ //
+             ans.append(str.charAt(i));//adding the characters which occured once means not marked as 1 after this we are incrementing the count if duplicate occurs  
+             freq.put(str.charAt(i),1);
+         }
+     }
+     return ans.toString();
+    }
+}
