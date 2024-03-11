@@ -1,0 +1,61 @@
+---------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------------
+Given two sorted matrices mat1 and mat2 of size n x n of elements. Each matrix contains numbers arranged in strictly ascending order, with each row sorted from left to right, 
+and the last element of a row being smaller than the first element of the next row. 
+You're given a target value, x, your task is to find and count all pairs {a, b} such that a is from mat1 and b is from mat2 where sum of a and b is equal to x.
+
+---------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------------
+Example 1:
+
+Input: 
+n = 3, x = 21
+mat1 = {{1, 5, 6},
+        {8, 10, 11},
+        {15, 16, 18}}
+mat2 = {{2, 4, 7},
+        {9, 10, 12},
+        {13, 16, 20}}
+OUTPUT: 4
+Explanation: The pairs whose sum is found to be 21 are (1, 20), (5, 16), (8, 13), (11, 10).
+---------------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------------
+
+//User function Template for Java
+
+class Solution {
+    int countPairs(int mat1[][], int mat2[][], int n, int x) {
+        // code here
+        /*Initialize four pointers i, j, k, and l to traverse the two matrices mat1 and mat2. 
+        i and j traverse mat1 from the top-right corner, while k and l traverse mat2 from the bottom-left
+        corner.*/
+        int i=0,j=0,k=n-1,l=n-1,ans=0; //Initialize a variable ans to 0 to store the count of pairs whose sum is equal to x.
+	    while(i<n && j<n && k>=0 && l>=0){
+	        if(mat1[i][j]+mat2[k][l]==x){
+	            ans++;
+	            if(j==n-1){    //in mat1 case when colis at last col 
+	                j=0;       //so make col 0 again
+	                i++;       //and increment the row 
+	            }
+	            else j++;    // or else go on incr the col
+	            if(l==0){    //in mat2 if col reached first col
+	                l=n-1;   // so mark it last col
+	                k--;     // and decrement the row as it is traversing from bottom        
+	            }
+	            else l--;    // else go on traversing through col
+	        }
+	        else if(mat1[i][j]+mat2[k][l]>x){  // if we got any sum > x  
+	            if(l==0){              //then traverse through the mat2 to make the value less so that we will get less sum
+	                l=n-1;
+	                k--;
+	            }
+	            else l--;
+	        }
+	        else{              //if we got any sum < x  
+	            if(j==n-1){    ////then traverse through the mat1 to make the value more so that we will get less sum
+	                j=0;
+	                i++;
+	            }
+	            else j++;	            
+	        }
+	    }
+	    return ans;
+    }
+}
