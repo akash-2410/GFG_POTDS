@@ -1,0 +1,104 @@
+----------------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------
+Given a square matrix a of size n x n, where each cell can be either 'X' or 'O', you need to find the size of the largest square subgrid that is completely surrounded by 'X'.
+More formally you need to find the largest square within the grid where all its border cells are 'X'.
+----------------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 4
+a = [[X,X,X,O],
+     [X,O,X,X],
+     [X,X,X,O],
+     [X,O,X,X]]
+Output:
+3
+Explanation:
+Here,the input represents following 
+matrix of size 4 x 4
+X X X O
+X O X X
+X X X O
+X O X X
+The square submatrix starting at 
+(0,0) and ending at (2,2) is the 
+largest submatrix surrounded by X.
+Therefore, size of that matrix would be 3.
+
+----------------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------
+
+Initialization: Initialize two 2D arrays, by_rows and by_cols, to store the count of consecutive 'X's in rows and columns, respectively. These arrays will help in efficiently finding the largest subsquare.
+
+Row-wise Counting: Iterate through each row of the grid. While iterating, maintain a count of consecutive 'X's encountered in each row. If the character encountered is not 'X', reset the count to 0.
+Store this count in the by_rows array.
+
+Column-wise Counting: Similar to row-wise counting, iterate through each column of the grid. Maintain a count of consecutive 'X's encountered in each column. Store this count in the by_cols array.
+
+Traversing from Bottom: Start traversing the grid from the bottom-right corner. This ensures that larger subsquares are checked first, optimizing the search process.
+
+Finding Largest Subsquare: For each cell in the grid, find the maximum possible subsquare size by taking the minimum of the counts of consecutive 'X's in the row and column corresponding to that cell.
+
+Iterative Checking: Iterate over possible subsquare sizes starting from the maximum possible size found in step 5. Check if the subsquare formed by that size is valid.
+It's valid if the counts of consecutive 'X's in both row and column meet the requirement for a subsquare of that size.
+
+Updating Maximum Subsquare Size: If a valid subsquare is found, update the maximum subsquare size (ans) accordingly.
+
+Returning Maximum Subsquare Size: After traversing the entire grid, return the maximum subsquare size (ans) found.
+
+----------------------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------
+
+class Solution {
+    int largestSubsquare(int n, char a[][]) {
+        // code here
+        int by_rows[][]=new int[n][n];
+         int by_cols[][]=new int[n][n];
+         //marking sequence of X row wise if not X then 0;
+         for(int i=0;i<n;i++){
+             int row=0;
+             for(int j=0;j<n;j++){
+                 if(a[i][j]=='X'){
+                     row++;
+                 }
+                 else{
+                     row=0;
+                 }
+                 by_rows[i][j]=row;
+             }
+         }
+          //marking sequence of X row wise if not X then 0;
+          for(int i=0;i<n;i++){
+             int col=0;
+             for(int j=0;j<n;j++){
+                 if(a[j][i]=='X'){
+                     col++;
+                 }
+                 else{
+                     col=0;
+                 }
+                 by_cols[j][i]=col;
+             }
+         }
+         //traversing from bottom 
+         int ans=0;
+        
+         for(int i=n-1;i>=0;i--){
+             for(int j=n-1;j>=0;j--){
+                 int side=Math.min(by_rows[i][j],by_cols[i][j]);
+                 while (side>ans){
+        // It then iteratively decreases the size of the subsquare (side) and checks if the subsquare formed 
+        //by that size is valid. It does so by checking if the lengths of consecutive
+        //'X's in both row and column meet the requirement for a subsquare of that size.
+                     if(by_rows[i-side+1][j]>=side && by_cols[i][j-side+1]>=side){
+                         ans=side;
+                     }
+                     else{
+                         side--;
+                     }
+                 }
+             }
+         }
+         
+         return ans;
+    }
+};
+
+
+
