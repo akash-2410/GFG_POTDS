@@ -1,0 +1,32 @@
+---------------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------
+You are given a Linked list of size n. The list is in alternating ascending and descending orders. Sort the given linked list in non-decreasing order.
+---------------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 6
+LinkedList = 1->9->2->8->3->7
+Output: 1 2 3 7 8 9
+Explanation: 
+After sorting the given list will be 1->2->3->7->8->9.
+---------------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------
+class Solution {
+    
+   public Node sort(Node head){
+        //your code here, return the head of the sorted list
+        ArrayList<Integer> a=new ArrayList<Integer>(); //to store the elements of the linked list
+        Node temp=head;
+        while(temp!=null){ //goon adding each elemnt 
+            a.add(temp.data);
+            temp=temp.next;
+        }
+        Collections.sort(a); //sort the list 
+        Node ans= new Node(-1); //create a new linked list 
+        Node rans = ans; //and start inserting the elements in this 
+        for(int i:a){
+            Node n=new Node(i);
+            ans.next=n;
+            ans=ans.next;
+        }
+        return rans.next;
+   }
+}
