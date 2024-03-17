@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+Given two linked list head1 and head2 with distinct elements, determine the count of all distinct pairs from both lists whose sum is equal to the given value x.
+
+Note: A valid pair would be in the form (x, y) where x is from first linked list and y is from second linked list.
+-------------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+head1 = 1->2->3->4->5->6
+head2 = 11->12->13
+x = 15
+Output: 3
+Explanation: There are total 3 pairs whose sum is 15 : (4,11) , (3,12) and (2,13)
+--------------------------------------------------------------------------------------------------Code & Explanation--------------------------------------------------------------------------------------------------
+
+class Solution {
+
+    public static int countPairs(LinkedList<Integer> head1, LinkedList<Integer> head2,
+                          int x) {
+        // add your code here
+         int pair=0;
+        HashSet<Integer>set= new HashSet<>(); //for storing the elements of head2 or head1 ur choice 
+        for(int i:head2)set.add(i); //go on adding each elemnt to hashset
+        for(int i:head1){//now traverse through head1
+        
+            if(set.contains(x-i))pair++; // and check whether the total (x) - that elemnt is present in set or not if  yes the pair found 
+        }
+        return pair;
+    }
+}
