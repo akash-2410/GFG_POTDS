@@ -1,0 +1,41 @@
+-----------------------------------------=-----------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+Given a root of a binary tree with n nodes, find its level order traversal.
+Level order traversal of a tree is breadth-first traversal for the tree.
+-----------------------------------------=-----------------------------------------------------------Example-------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+    1
+  /   \ 
+ 3     2
+Output:
+1 3 2
+-----------------------------------------=-----------------------------------------------------------Intution--------------------------------------------------------------------------------------------------------
+Initialize an empty ArrayList called ans to store the result of the level order traversal.
+Initialize a queue called q (using Java's LinkedList implementation) to perform a level order traversal of the tree.
+Add the root node to the queue q.
+Begin a loop that continues until the queue q becomes empty.
+Inside the loop:
+Remove the front element from the queue q and assign it to a variable temp.
+If the left child of temp exists, enqueue it into the queue q.
+If the right child of temp exists, enqueue it into the queue q.
+Add the data of the current node temp to the ans ArrayList.
+Once the loop completes, return the ans ArrayList containing the level order traversal of the tree.
+-----------------------------------------=-----------------------------------------------------------Code------------------------------------------------------------------------------------------------------------
+class Solution
+{
+    //Function to return the level order traversal of a tree.
+    static ArrayList <Integer> levelOrder(Node root) 
+    {
+        // Your code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        Queue<Node> q=new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            Node temp=q.remove();
+            if(temp.left!=null) q.add(temp.left);
+            if(temp.right!=null) q.add(temp.right);
+            ans.add(temp.data);
+        }
+        return ans;
+    }
+}
