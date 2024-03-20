@@ -1,0 +1,77 @@
+-------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+Given a binary tree having n nodes. Find the sum of all nodes on the longest path from root to any leaf node. 
+If two or more paths compete for the longest path, then the path having maximum sum of nodes will be considered.
+--------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+        4        
+       /  \       
+      2   5      
+     / \   /  \     
+    7  1 2  3    
+      /
+     6
+Output: 
+13
+Explanation:
+        4        
+       /  \       
+      2   5      
+     / \   /  \     
+    7  1 2  3 
+      /
+     6
+The highlighted nodes (4, 2, 1, 6) above are part of the longest root to leaf path having sum = (4 + 2 + 1 + 6) = 13
+--------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------------------
+sumOfLongRootToLeafPath Method:
+This method is the entry point for finding the sum of the longest root-to-leaf path.
+It initializes sum and count variables to zero.
+It resets ans and mxCount variables to their initial states.
+It then calls the help method to traverse the tree and calculate the sum of the longest root-to-leaf path.
+
+help Method:
+This method is a recursive helper function that traverses the binary tree.
+It takes three parameters: root (the current node), sum (sum of values along the path), and count (number of nodes along the path).
+If the current node is null, it means we've reached the end of a path, so it checks if the current path is longer than the previously recorded longest path. If so, it updates ans and mxCount accordingly. If the count is the same as the maximum count, it updates ans if the sum is greater.
+If the current node is not null, it adds the value of the current node to the sum and increments the count. Then it recursively calls itself for the left and right children of the current node.
+
+ans and mxCount:
+ans holds the sum of the longest root-to-leaf path found so far.
+mxCount keeps track of the length (number of nodes) of the longest root-to-leaf path found so far.
+
+Overall Intuition:
+The algorithm explores all root-to-leaf paths in the binary tree.
+It keeps track of the sum and count for each path.
+Whenever it finds a longer path, it updates the ans variable with the sum of that path, and updates mxCount with the count of nodes in that path.
+At the end of traversal, it returns the sum of the longest root-to-leaf path (ans).
+--------------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------------
+class Solution{
+  static int ans = Integer.MIN_VALUE,mxCount=0; 
+    static void help(Node root, int sum, int count){
+        if(root==null){
+            if(count>mxCount){
+                ans=sum;
+                mxCount=count;
+            }
+            else if(count==mxCount){
+                ans=Math.max(ans,sum);
+            }
+            return;
+        }
+        sum+=root.data;
+        count++;
+        help(root.left,sum,count);
+        help(root.right,sum,count);
+        
+    }
+    public int sumOfLongRootToLeafPath(Node root)
+    {
+        //code here
+        int sum=0,count=0;
+        ans=Integer.MIN_VALUE;
+        mxCount=0;
+        help(root,sum,count);
+        return ans;
+    }
+
+}
