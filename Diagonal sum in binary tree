@@ -1,0 +1,73 @@
+-------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------------
+Consider Red lines of slope -1 passing between nodes (in following diagram). The diagonal sum in a binary tree is the sum of all node datas lying between these lines.
+Given a Binary Tree of size n, print all diagonal sums.
+
+For the following input tree, output should be 9, 19, 42.
+9 is sum of 1, 3 and 5.
+19 is sum of 2, 6, 4 and 7.
+42 is sum of 9, 10, 11 and 12.
+-------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------------
+Example 1:
+
+Input:
+         4
+       /   \
+      1     3
+           /
+          3
+Output: 
+7 4 
+-------------------------------------------------------------------------------------------------Intuition-------------------------------------------------------------------------------------------------------------
+solve method: This is a recursive method that calculates the diagonal sums of the tree. It takes three parameters:
+
+root: The current node being processed.
+mp: A HashMap that stores the diagonal sums.
+level: The level of the current node in the tree.
+Inside the method:
+
+It updates the diagonal sum corresponding to the current level by adding the value of the current node (root.data) to the sum stored in the HashMap.
+Then, it recursively calls itself for the left subtree with level + 1 and for the right subtree with the same level. However, there's a mistake here. It should be level + 1 for the right subtree to maintain the diagonal nature of the traversal.
+diagonalSum method: This method is responsible for initializing the HashMap, calling the solve method to calculate diagonal sums, and then extracting the sums into an ArrayList.
+
+It creates a HashMap mp to store diagonal sums.
+It calls the solve method to populate the HashMap.
+It creates an empty ArrayList ans.
+It iterates over the entries of the HashMap and adds the values (diagonal sums) to the ArrayList.
+Finally, it returns the ArrayList containing the diagonal sums.
+-------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------------
+class Tree {
+    
+ 
+    static void solve(Node root, HashMap<Integer,Integer> mp, int level){
+        if(root == null) return;
+        
+        // Updating the diagonal sums
+        mp.put(level, mp.getOrDefault(level, 0) + root.data);
+        
+        // Recursively traverse both left and right subtrees
+        solve(root.left, mp, level + 1);
+        solve(root.right, mp, level); // It should be root.right instead of root.left
+        
+        return;
+    }
+    
+    public static ArrayList<Integer> diagonalSum(Node root) 
+    {
+        // Create a HashMap to store diagonal sums
+        HashMap<Integer, Integer> mp = new HashMap<>();
+        
+        // Populate the HashMap by traversing the tree
+        solve(root, mp, 0);
+        
+        // Prepare the output ArrayList
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        // Iterate over the HashMap entries to extract diagonal sums
+        for(Map.Entry<Integer, Integer> entry : mp.entrySet()){
+            ans.add(entry.getValue());
+        }
+        
+        return ans;
+    }
+}
+
