@@ -1,0 +1,51 @@
+----------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+You are given a stack st of n integers and an element x. You have to insert x at the bottom of the given stack. 
+
+Note: Everywhere in this problem, the bottommost element of the stack is shown first while priniting the stack.
+----------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 5
+x = 2
+st = {4,3,2,1,8}
+Output:
+{2,4,3,2,1,8}
+Explanation:
+After insertion of 2, the final stack will be {2,4,3,2,1,8}.
+----------------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------------------
+Base Case:
+The base case of the recursion is when the stack is empty (st.isEmpty()). In this case, the function simply pushes the given element x onto the stack.
+
+Recursive Approach:
+When the stack is not empty, the pushAtBottom function is called recursively.
+The function removes the top element of the stack (pop = st.pop()), effectively "popping" elements off the stack until it reaches the bottom.
+Once it reaches the bottom (empty stack), it pushes the new element x onto the stack.
+Then, it pushes back all the popped elements (pop) onto the stack in their original order. This is done by calling st.push(pop) after the recursive call.
+
+Reconstruction of Stack:
+By recursively popping and pushing elements, the function effectively inserts the new element x at the bottom of the stack while maintaining the order of other elements above it.
+
+Returning the Result:
+After the insertion operation is completed, the modified stack is returned.
+
+Efficiency:
+Although the approach involves recursion, it is efficient because it iteratively pops and pushes elements, ensuring that each element is processed exactly once.
+This approach avoids redundant operations and minimizes the time complexity of the insertion process.
+----------------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------------------
+class Solution {
+    public Stack<Integer> insertAtBottom(Stack<Integer> st, int x) {
+        pushAtBottom(st,x);
+        return st;
+    }
+    
+    private void pushAtBottom(Stack<Integer> st,int x){
+        if(st.isEmpty()){
+            st.push(x);
+            return;
+        }
+        int pop =st.pop();
+        pushAtBottom(st,x);
+        st.push(pop);
+        return;
+    }
+}
