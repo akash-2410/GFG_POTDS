@@ -1,0 +1,64 @@
+-------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------------
+Given a positive integer n. Your task is to generate a string list of all n-bit binary numbers where, for any prefix of the number, 
+there are more or an equal number of 1's than 0's. The numbers should be sorted in decreasing order of magnitude.
+-------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:  
+n = 2
+Output: 
+"11, 10"
+Explanation: Valid numbers are those where each prefix has more 1s than 0s:
+11: all its prefixes (1 and 11) have more 1s than 0s.
+10: all its prefixes (1 and 10) have more 1s than 0s.
+So, the output is "11, 10".
+-------------------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------------------------
+Method Invocation:
+The NBitBinary method takes an integer N as input and returns an ArrayList of Strings containing all possible N-bit binary numbers satisfying the condition.
+Inside NBitBinary, an array arr of characters is created to store the binary number, and an ArrayList ans is initialized to store the results.
+
+Recursion:
+The solve method is called recursively to generate binary numbers fulfilling the condition.
+The solve method takes three parameters: the current array arr, a pointer ptr indicating the current position being filled in arr, and the count of '1's filled so far (oneCt).
+
+Base Case:
+When the pointer ptr reaches the length of the array (arr.length), it means the binary number is complete. At this point, the binary number is added to the result list ans.
+
+Recursion Steps:
+At each step, two recursive calls are made:
+Putting '1': The current position in the array is filled with '1', and the pointer ptr is moved to the next position. The count of '1's (oneCt) is incremented by 1 for this branch.
+Putting '0': Before putting '0', the code checks if it's valid to put '0' at the current position. It ensures that the number of '0's (counted up to the current position) plus one does not exceed the count of '1's. 
+If this condition is satisfied, '0' is placed in the array, and the pointer ptr is moved to the next position. The count of '1's (oneCt) remains the same for this branch.
+
+Backtracking:
+Since the array arr is being modified in place, backtracking is not explicitly needed. The array state is effectively managed by the recursive calls.
+
+Return Value:
+Finally, the method returns the ArrayList ans, which contains all the valid N-bit binary numbers.
+-------------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------------------
+class Solution {
+   private static ArrayList<String> ans;
+    ArrayList<String> NBitBinary(int N) {
+        // code here
+        char[] arr = new char[N];
+        ans = new ArrayList<>();
+        solve(arr, 0, 0);
+        return ans;
+    }
+    private static void solve(char[] arr, int ptr, int oneCt) {
+        if(ptr == arr.length) {
+            ans.add(new String(arr));
+            return;
+        }
+        // put '1'
+        arr[ptr] = '1';
+        solve(arr, ptr + 1, oneCt + 1);
+        
+
+        // put '0'
+        int noOfZeros = ptr - oneCt;
+        if(noOfZeros + 1 <= oneCt) {
+            arr[ptr] = '0';
+            solve(arr, ptr + 1, oneCt);
+        }
+    }
+}
