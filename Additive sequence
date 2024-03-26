@@ -1,0 +1,97 @@
+-------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------------------
+Given a string n, your task is to find whether it contains an additive sequence or not.
+A string n contains an additive sequence if its digits can make a sequence of numbers in which every number is addition of previous two numbers. 
+You are required to complete the function which returns true if the string is a valid sequence else returns false. For better understanding check the examples.
+
+Note: A valid string should contain at least three digit to make one additive sequence. 
+-------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:  
+n = "1235813"
+Output: 
+1
+Explanation: 
+The given string can be splited into a series of numbers  
+where each number is the sum of the previous two numbers: 
+1 + 2 = 3, 2 + 3 = 5, 3 + 5 = 8, and 5 + 8 = 13. Hence, the output would be 1 (true).
+-------------------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------------------------
+findSum Method:
+This method takes two strings a and b representing two numbers as input and calculates their sum.
+It iterates through the digits of both numbers, starting from the least significant digit.
+At each step, it adds the corresponding digits from a and b, along with the carry if any.
+The sum is appended to a StringBuilder ans, and the carry is updated for the next iteration.
+Finally, it returns the sum of a and b as a string.
+
+help Method:
+This method checks whether a given string c can be formed by summing two input strings a and b.
+It calls the findSum method to calculate the sum of a and b.
+It then iterates through the characters of c and the calculated sum, comparing them. If they differ at any point, it returns false.
+If the characters of c are exhausted but not the sum, or vice versa, it returns false.
+If c matches the calculated sum, it updates c to be the substring remaining after a and b.
+It recursively calls itself with b and the calculated sum to continue checking the remaining part of c.
+
+isAdditiveSequence Method:
+This method serves as the entry point for checking whether the given string n forms an additive sequence.
+It iterates through possible combinations of a, b, and c within the string n.
+For each combination, it calls the help method to determine if it forms an additive sequence.
+If any combination forms an additive sequence, it returns true; otherwise, it returns false.
+
+Return Value:
+The isAdditiveSequence method returns true if any combination of a, b, and c forms an additive sequence; otherwise, it returns false.
+-------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------------
+class Solution {
+      static String findSum(String a,String b){
+        int i=a.length()-1,j=b.length()-1;
+        StringBuilder ans = new StringBuilder();
+        int carry=0;
+        while(i>=0 && j>=0){
+            int sum = (a.charAt(i)-'0')+(b.charAt(j)-'0')+carry;
+            ans.append((char)sum%10);
+            carry=sum/10;
+            i--;
+            j--;
+        }
+        while(i>=0){
+            int sum = (a.charAt(i)-'0')+carry;
+            ans.append((char)sum%10);
+            carry=sum/10;
+            i--;
+        }
+        while(j>=0){
+            int sum = (b.charAt(j)-'0')+carry;
+            ans.append((char)sum%10);
+            carry=sum/10;
+            j--;
+        }
+        if(carry!=0){
+            ans.append((char)(carry+'0'));
+        }
+        StringBuilder temp = ans.reverse();
+        return temp.toString();
+    }
+    static boolean help(String a,String b,String c){
+        String sum = findSum(a,b);
+        int i=0,j=0;
+        while(i<c.length() && j<sum.length()){
+            if(c.charAt(i)!=sum.charAt(j))return false;
+            i++;
+            j++;
+        }
+        if(j!=sum.length())return false;
+        if(i==c.length())return true;
+        c=c.substring(i);
+        return help(b,sum,c);
+    }
+    public boolean isAdditiveSequence(String n) {
+        // code here
+        for(int i=0;i<n.length()/2;i++){
+            for(int j=i+1;j<n.length()-1;j++){
+                String a = n.substring(0,i+1);
+                String b = n.substring(i+1,j+1);
+                String c = n.substring(j+1);
+                if(help(a,b,c))return true;
+            }
+        }
+        return false;
+    }
+}
