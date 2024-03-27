@@ -1,0 +1,89 @@
+---------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+Given a matrix mat[][] with r rows and c columns, where some cells are landmines (marked as 0) and others are safe to traverse. 
+Your task is to find the shortest safe route from any cell in the leftmost column to any cell in the rightmost column of the mat.
+You cannot move diagonally, and you must avoid both the landmines and their adjacent cells (up, down, left, right), as they are also unsafe.
+---------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+mat = [1, 0, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1],
+      [1, 1, 1, 0, 1],
+      [1, 1, 1, 1, 0]
+Output: 
+6
+Explanation: 
+We can see that length of shortest
+safe route is 6
+[1 0 1 1 1]
+[1 1 1 1 1] 
+[1 1 1 1 1]
+[1 1 1 0 1] 
+[1 1 1 1 0]
+---------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------------------
+Matrix Initialization:
+First, a new 2D array arr is created with the same dimensions as the input matrix mat. This array is initialized with all 1s.
+All 0s in the mat matrix represent obstacles, so their corresponding positions in arr are set to 0 as well. Additionally, adjacent positions to obstacles are marked as 0 in arr.
+
+Breadth-First Search (BFS):
+The code employs BFS to find the shortest path.
+A queue q is initialized to store the cells to be visited along with their distances from the starting cell.
+A 2D array vis is initialized to keep track of visited cells.
+Initially, cells in the leftmost column (j = 0) that are not obstacles are added to the queue with their distances set to 1.
+
+Exploration:
+While the queue is not empty, the code dequeues a cell and explores its neighboring cells (up, down, left, right) that are within the boundaries of the matrix and are not obstacles.
+If a neighboring cell is valid and hasn't been visited before, it's added to the queue with its distance incremented by 1.
+The process continues until reaching the rightmost column (j == c - 1), indicating the end of the shortest path.
+If the end of the shortest path is reached, the distance to that cell is returned as the shortest path length.
+If the queue becomes empty without reaching the end, it means there's no valid path, and -1 is returned.
+
+Return Value:
+The method returns the shortest path length if a valid path is found, otherwise, it returns -1.
+---------------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------------------
+class Solution {
+ public static int findShortestPath(int[][] mat) {
+        // code here
+       int r = mat.length, c = mat[0].length;
+       int arr[][] = new int[r][c];
+       for(int x[]:arr)Arrays.fill(x,1);
+       int direRow[]={-1,0,1,0};
+       int direCol[]={0,-1,0,1};
+       for(int i=0;i<r;i++){
+           for(int j=0;j<c;j++){
+               if(mat[i][j]==0){
+                   arr[i][j]=0;
+                   for(int k=0;k<4;k++){
+                       int nr = direRow[k]+i;
+                       int nc = direCol[k]+j;
+                       if(nr>=0 && nr<r && nc>=0 && nc<c){
+                           arr[nr][nc]=0;
+                       }
+                   }
+               }
+           }
+       }
+       Queue<int[]> q = new LinkedList<>();
+       int vis[][] = new int[r][c];
+       for(int x[]:vis)Arrays.fill(x,0);
+       for(int i=0;i<r;i++){
+           if(arr[i][0]==1)q.add(new int[]{1,i,0});
+       }
+       while(!q.isEmpty()){
+           int[] temp = q.poll();
+           int i = temp[1];
+           int j = temp[2];
+           int dis = temp[0];
+           vis[i][j]=1;
+           if(j==c-1)return dis;
+           for(int k=0;k<4;k++){
+               int nr = direRow[k]+i;
+               int nc = direCol[k]+j;
+               if(nr>=0 && nr<r && nc>=0 && nc<c && vis[nr][nc]==0 && arr[nr][nc]==1){
+                   q.add(new int[]{dis+1,nr,nc});
+               }
+           }
+       }
+       return -1;
+    }
+}
