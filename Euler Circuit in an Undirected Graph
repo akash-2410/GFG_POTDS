@@ -1,0 +1,39 @@
+--------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+Eulerian Path is a path in a graph that visits every edge exactly once. Eulerian Circuit is an Eulerian Path that starts and ends on the same vertex. 
+Given the number of vertices v and adjacency list adj denoting the graph. Find that there exists the Euler circuit or not. Return 1 if there exist  alteast one eulerian path else 0.
+--------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+v = 4 
+edges[] = {{0, 1}, 
+           {0, 2}, 
+           {1, 3}, 
+           {2, 3}}
+
+Output: 
+1
+Explanation: corresponding adjacency list will be {{1, 2},{0, 3},{0, 3},{1, 2}}
+One of the Eularian circuit 
+starting from vertex 0 is as follows:
+0->1->3->2->0
+--------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+The method takes two parameters: v, representing the number of vertices in the graph, and adj, an ArrayList of ArrayLists representing the adjacency list of the graph.
+
+It iterates over each vertex of the graph using a for loop.
+
+For each vertex i, it checks the size of its adjacency list (the number of edges incident to i). If this number is odd (% 2 == 1), it means that the vertex i has an odd degree,
+which violates the condition for the existence of an Eulerian circuit. In an Eulerian circuit, every vertex must have an even degree.
+
+If any vertex is found to have an odd degree, the method returns false, indicating that an Eulerian circuit does not exist in the graph.
+
+If all vertices have even degrees, the method returns true, indicating that an Eulerian circuit exists in the graph.
+--------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean isEularCircuitExist(int v, ArrayList<ArrayList<Integer>> adj) {
+        // Code here
+        for(int i=0;i<v;i++){
+            if((int)adj.get(i).size() % 2==1) return false;
+        }
+        return true;
+    }
+}
