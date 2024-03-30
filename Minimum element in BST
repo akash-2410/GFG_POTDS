@@ -1,0 +1,31 @@
+----------------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------------
+
+Given the root of a Binary Search Tree. The task is to find the minimum valued element in this given BST.
+
+----------------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+           5
+         /    \
+        4      6
+       /        \
+      3          7
+     /
+    1
+Output: 1
+----------------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------------------
+The function minValue takes a parameter root, which represents the root node of the BST.
+
+Inside the function, it checks if the left child of the current node (root.left) is null. If it is null, then the current node (root) itself is the minimum element in the BST, so it returns root.data.
+
+If the left child is not null, it recursively calls the minValue function on the left child (root.left). This step continues until it reaches the leftmost node of the BST, which will be the minimum element.
+
+Once the leftmost node is reached, its data is returned as the minimum element in the BST.
+----------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------------
+class Solution {
+    // Function to find the minimum element in the given BST.
+    int minValue(Node root) {
+        // code here
+        return root.left==null?root.data: minValue(root.left);
+    }
+}
