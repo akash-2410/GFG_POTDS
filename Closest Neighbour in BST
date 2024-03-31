@@ -1,0 +1,50 @@
+--------------------------------------------------------------------------------------------------Question-----------------------------------------------------------------------------------------------------------
+Given the root of a binary search tree and a number n, find the greatest number in the binary search tree that is less than or equal to n. 
+--------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------------------------
+Example 1 :
+Input : 
+Image
+n = 24
+Output : 
+21
+Explanation : The greatest element in the tree which 
+              is less than or equal to 24, is 21. 
+              (Searching will be like 5->12->21)
+
+--------------------------------------------------------------------------------------------------Intution-----------------------------------------------------------------------------------------------------------
+Initialization:
+The class initializes a static variable ans to -1. This variable will store the maximum value found during the traversal of the BST.
+
+find Method:
+This method performs an in-order traversal of the BST recursively.
+It first checks if the current node is null. If it is, it returns, indicating the end of the traversal.
+It recursively traverses the left subtree of the current node.
+For each node visited during the traversal, it compares the value of the node with the given integer n. If the value of the node is less than or equal to n, 
+it updates the ans variable with the maximum of its current value and the value of the node.
+It then recursively traverses the right subtree of the current node.
+
+findMaxForN Method:
+This method serves as a wrapper function for the find method.
+It resets the ans variable to -1 to prepare for the traversal.
+It calls the find method, passing the root of the BST and the given integer n.
+After the traversal is complete, it returns the value stored in the ans variable, which represents the maximum value less than or equal to n in the BST.
+--------------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------------
+class Solution {
+    static int ans=-1;
+    private static void find(Node root,int n){
+        if(root==null){
+            return;
+        }
+        find(root.left,n);
+        if(root.key<=n){
+            ans = Math.max(ans,root.key);
+        }
+        find(root.right,n);
+    }
+    public static int findMaxForN(Node root, int n) {
+        // Add your code here.
+        ans = -1;
+        find(root,n);
+        return ans;
+    }    
+}
