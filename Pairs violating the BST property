@@ -1,0 +1,116 @@
+-----------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------------
+Given a binary tree with n nodes, find the number of pairs violating the BST property.
+BST has the following properties:-
+
+Every node is greater than its left child and less than its right child.
+Every node is greater than the maximum value of in its left subtree and less than the minimum value in its right subtree.
+The maximum in the left sub-tree must be less than the minimum in the right subtree.
+-----------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------------
+Example 1:
+Input : 
+n = 5
+Input tree
+https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/861883/Web/Other/blobid0_1709054479.png
+Output :
+5
+Explanation : 
+Pairs violating BST property are:-
+(10,50), 10 should be greater than its left child value.
+(40,30), 40 should be less than its right child value.
+(50,20), (50,30) and (50,40), maximum of left subtree of 10 is 50 greater than 20, 30 and 40 of its right subtree.
+-----------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+pairsViolatingBST Method:
+This method is the entry point for the calculation of pairs violating the BST property.
+Parameters: It takes two parameters: n, representing the number of nodes in the BST, and root, representing the root node of the BST.
+Functionality:
+Initializes the ans variable to 0 to prepare for counting the violating pairs.
+Performs an in-order traversal of the BST (root) and collects the values of nodes into an ArrayList nodes by calling the inorder method.
+Converts the ArrayList nodes into an array arr.
+Sorts the array arr using the merge sort algorithm by calling the mergesort method.
+Returns the value of ans, which represents the count of pairs violating the BST property.
+
+inorder Method:
+This method performs an in-order traversal of the BST to collect the values of nodes.
+Parameters: It takes two parameters: root, representing the current node being visited, and nodes, representing the ArrayList to store node values.
+Functionality:
+Checks if the current node root is null. If it is, returns, indicating the end of the traversal.
+Recursively visits the left subtree of the current node by calling inorder(root.left, nodes).
+Adds the value of the current node root.data to the ArrayList nodes.
+Recursively visits the right subtree of the current node by calling inorder(root.right, nodes).
+
+mergesort Method:
+This method implements the merge sort algorithm to sort the array arr.
+Parameters: It takes three parameters: arr, representing the array to be sorted, low, representing the starting index of the subarray, and high, representing the ending index of the subarray.
+Functionality:
+Checks if the low index is greater than or equal to the high index. If it is, returns, indicating the base case of a single element in the subarray.
+Calculates the mid index as the midpoint between low and high.
+Recursively calls mergesort on the left half of the subarray (arr, low, mid).
+Recursively calls mergesort on the right half of the subarray (arr, mid+1, high).
+Merges the sorted halves using the merge method.
+
+merge Method:
+This method merges two sorted subarrays while counting inversions (pairs violating the BST property).
+Parameters: It takes four parameters: arr, representing the array to be merged, low, mid, and high, representing the indices defining the two sorted subarrays to be merged.
+Functionality:
+Creates two temporary arrays arr1 and arr2 to store the elements of the two subarrays.
+Copies elements from the original array arr into the temporary arrays arr1 and arr2.
+Iterates through the subarrays, comparing elements and updating the ans variable whenever an inversion is found.
+Merges the two subarrays into the original array arr.
+-----------------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------------
+class Solution {
+    static int ans;
+    public static int pairsViolatingBST(int n, Node root) {
+        // code here
+        ans=0;
+        ArrayList<Integer> nodes= new ArrayList<>();
+        inorder(root,nodes);
+        int arr[] = new int[nodes.size()];
+        for(int i=0;i<nodes.size();i++) arr[i]= nodes.get(i);
+        mergesort(arr,0,n-1);
+        return ans;
+    }
+    
+    static void inorder(Node root,ArrayList<Integer> nodes){
+        if(root == null) return;
+        inorder(root.left,nodes);
+        nodes.add(root.data);
+        inorder(root.right,nodes);
+    }
+    
+     static void mergesort(int arr[],int low,int high){
+         if(low>=high) return;
+         int mid = (low+high)/2;
+         mergesort(arr,low,mid);
+         mergesort(arr,mid+1,high);
+         merge(arr,low,mid,high);
+     }
+     
+     static void merge(int arr[],int low,int mid,int high){
+         int a = mid-low+1;
+         int b = high-mid ;
+         int arr1[] = new int[a];
+         int arr2[] = new int[b];
+         for(int i=0;i<a;i++) arr1[i]=arr[low+i];
+         for(int i=0;i<b;i++) arr2[i]=arr[mid+i+1];
+         int i=0,k=low,j=0;
+          while(i<a&&j<b){
+            if(arr1[i]<=arr2[j]){
+                arr[k]=arr1[i];
+                i++;
+            }
+            else{
+                ans+=a-i;
+                arr[k]=arr2[j];
+                j++;
+            }
+            k++;
+        }
+        while(i<a){
+            arr[k++]=arr1[i++];
+        }
+        while(j<b){
+            arr[k++]=arr2[j++];
+        }
+    }
+    
+}
