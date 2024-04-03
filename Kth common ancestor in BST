@@ -1,0 +1,82 @@
+-------------------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+Given a BST with n (n>=2) nodes, find the kth common ancestor of nodes x and y in the given tree. Return -1 if kth ancestor does not exist.
+
+Nodes x and y will always be present in the input of a BST, and x != y.
+-------------------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+Input tree
+https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/861885/Web/Other/blobid0_1712119495.png
+k = 2, x = 40, y = 60 
+Output:
+30
+Explanation:
+Their 2nd common ancestor is 30.
+
+Example 2:
+Input: 
+Input tree
+https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/861885/Web/Other/blobid1_1712119495.png
+k = 2, x = 40, y = 60
+Output:
+-1
+Explanation:
+LCA of 40 and 60 is 50, which is root itself. There does not exists 2nd common ancestor in this case.
+-------------------------------------------------------------------------------------------------------Intution- with code-------------------------------------------------------------------------------------------
+class Solution {
+    public int kthCommonAncestor(Node root, int k, int x, int y) {
+        // Initialize a counter for tracking the total number of nodes visited
+        int total = 1; 
+        // Create a temporary node to store the root
+        Node temp = root;
+        // Traverse the tree until the root reaches a null node
+        while (root != null) {
+            // If both x and y are greater than the current node's value,
+            // move to the left subtree
+            if (root.data > x && root.data > y) {
+                root = root.left;
+                total++; // Increment the total count of visited nodes
+            }
+            // If both x and y are less than the current node's value,
+            // move to the right subtree
+            else if (root.data < x && root.data < y) {
+                root = root.right;
+                total++; // Increment the total count of visited nodes
+            }
+            // If either x or y is equal to the current node's value,
+            // break out of the loop
+            else break;
+        }
+        
+        // Initialize a level counter for tracking the depth of traversal
+        int level = 1;
+        // Calculate the adjusted total count for finding the kth common ancestor
+        total -= k;
+        total++;
+        // Reset the root to the original root of the tree
+        root = temp;
+        // Traverse the tree again to find the kth common ancestor
+        while (root != null) {
+            // If the current level matches the adjusted total count,
+            // return the value of the current node as the kth common ancestor
+            if (level == total) return root.data;
+            // If both x and y are greater than the current node's value,
+            // move to the left subtree
+            if (root.data > x && root.data > y) {
+                root = root.left;
+                level++; // Increment the level of traversal
+            }
+            // If both x and y are less than the current node's value,
+            // move to the right subtree
+            else if (root.data < x && root.data < y) {
+                root = root.right;
+                level++; // Increment the level of traversal
+            }
+            // If either x or y is equal to the current node's value,
+            // break out of the loop
+            else break;
+        }
+        // Return -1 if no kth common ancestor is found
+        return -1;
+    }
+}
