@@ -1,0 +1,50 @@
+----------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------------
+Given an integer s represented as a string, the task is to get the sum of all possible sub-strings of this string.
+As the answer will be large, return answer modulo 109+7. 
+Note: The number may have leading zeros.
+----------------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+s = "1234"
+Output: 
+1670
+Explanation: 
+Sum = 1 + 2 + 3 + 4 + 12 + 23 + 34 + 123 + 234 + 1234 = 1670
+----------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
+Function Signature: The function sumSubstrings takes a string s as input and returns a long integer.
+
+Variables Initialization:
+ans, previous, and mod are initialized as long integers.
+ans stores the total sum of all substrings' numeric values.
+previous stores the numeric value of the previous substring.
+mod is used to perform modulo operation to prevent integer overflow.
+
+Loop through the String:
+The loop iterates through each character of the string s.
+For each character at index i, it calculates the numeric value of the substring ending at that index.
+
+Calculate Current Substring's Numeric Value:
+curr is calculated using the formula:
+curr = (previous * 10) % mod + (s.charAt(i) - '0') * (i + 1) % mod
+(previous * 10) % mod: Multiplies the previous substring value by 10 (shifts digits left) and applies modulo operation.
+(s.charAt(i) - '0') * (i + 1) % mod: Multiplies the numeric value of the current character by its position in the string (1-indexed) and applies modulo operation.
+Finally, adds both parts to get the current substring's numeric value.
+
+Update Previous and Total Sum:
+Update previous with the value of curr.
+Update ans by adding curr and applying modulo operation.
+Return Total Sum: After iterating through all characters in the string, return ans, which holds the total sum of all substrings' numeric values.
+----------------------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------------------
+class Solution 
+{
+   public static long sumSubstrings(String s)
+    {
+        long ans=0,previous=0,mod=1000000007;
+        for(int i=0;i<s.length();i++){
+            long curr = (previous*10)%mod+(s.charAt(i)-'0')*(i+1)%mod;
+            previous=curr;
+            ans=(ans+curr)%mod;
+        }
+        return ans;
+    }
+}
