@@ -1,0 +1,51 @@
+------------------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------------
+Given an array nums of n positive integers. Find the minimum number of operations required to modify the array such that array elements are in strictly increasing order (nums[i] < nums[i+1]).
+Changing a number to greater or lesser than original number is counted as one operation.
+
+Note: Array elements can become negative after applying operation
+------------------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 6
+nums = [1, 2, 3, 6, 5, 4]
+Output: 
+2
+Explanation: 
+By decreasing 6 by 2 and increasing 4 by 2, nums will be like [1, 2, 3, 4, 5, 6] which is stricly increasing.
+------------------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------------------
+Initialization:
+n stores the length of the array nums.
+dp is an array initialized to store the length of the longest increasing subsequence ending at each index.
+
+Dynamic Programming Approach:
+The idea is to traverse the array nums and for each element, find the longest increasing subsequence ending at that element.
+For each element nums[i], we iterate over all previous elements nums[j] (where j < i).
+If the difference between nums[i] and nums[j] is greater than or equal to i - j, it implies that nums[i] can be part of the increasing subsequence ending at index i. Because nums[j] is not too far behind nums[i] in index and nums[i] is greater than or equal to nums[j] by at least i - j, hence it contributes to the increasing sequence.
+We update dp[i] with the maximum value of dp[i] and dp[j] + 1 (length of subsequence ending at j plus 1).
+At each step, we also update temp with the maximum value of dp[i]. This temp variable will eventually store the length of the longest increasing subsequence.
+
+Final Result:
+The minimum number of operations required to make the entire array strictly increasing is equal to n - temp, where n is the length of the array and temp is the length of the longest increasing subsequence.
+Return Value:
+
+The function returns the minimum number of operations required.
+------------------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------------
+class Solution
+{
+    public int min_operations(int []nums)
+    {
+        // Code here
+        int n=nums.length,temp=1;
+        int dp[]=new int[n];
+        Arrays.fill(dp,1);
+        for(int i=0;i<n;i++){
+             for(int j=0;j<i;j++){
+                 if(nums[i] - nums[j] >= i-j){
+                     dp[i]=Math.max(dp[i],dp[j]+1);
+                     temp=Math.max(dp[i],temp);
+                 }
+             }
+        }
+        return n-temp;
+    }
+}
