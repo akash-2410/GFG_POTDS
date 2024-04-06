@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------------------
+There are n stairs, and a person standing at the bottom wants to reach the top. The person can climb either 1 stair or 2 stairs at a time. 
+Count the number of ways, the person can reach the top (order does not matter).
+-------------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 5
+Output: 
+3
+Explanation:
+You may reach the 5th stair in 3 ways.
+The 3 possible ways are:
+1, 1, 1, 1, 1
+1, 1, 1, 2
+1, 2, 2
+-------------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------------------
+Approach:
+When the order doesn't matter, reaching the nth stair can be achieved by taking 1 step at a time or 2 steps at a time.
+Each step leads to the same result regardless of the order.
+
+Calculation:
+Divide the total number of steps by 2 to find the number of ways if taking 2 steps at a time.
+Add 1 to account for the possibility of taking all 1-step moves.
+
+Return:
+Return the calculated value, ensuring it's casted to long to handle larger results.
+
+-------------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------------------------
+class Solution {
+    // Function to count number of ways to reach the nth stair
+    // when order does not matter.
+    Long countWays(int n) {
+        // your code here
+        return (long)n/2 +1;
+    }
+}
