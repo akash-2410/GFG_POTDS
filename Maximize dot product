@@ -1,0 +1,49 @@
+----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Given two arrays a and b of positive integers of size n and m where n >= m,
+the task is to maximize the dot product by inserting zeros in the second array but you cannot disturb the order of elements.
+Dot product of array a and b of size n is a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1].
+----------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 5, a[] = {2, 3, 1, 7, 8} 
+m = 3, b[] = {3, 6, 7}
+Output: 
+107
+Explanation: 
+We get maximum dot product after inserting 0 at first and third positions in second array.
+Therefore b becomes {0, 3, 0, 6, 7}. 
+Maximum dot product = 2*0 + 3*3 + 1*0 + 7*6 + 8*7 = 107.
+------------------------------------------------------------------------------------Intution- with Code-----------------------------------------------------------------------------------------
+class Solution {
+    public int maxDotProduct(int n, int m, int[] a, int[] b) {
+
+        // Initializing a 2D array dp to store results.
+        // dp[i][j] represents the maximum dot product up to a[i] and b[j].
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Initialize all elements of dp with 0
+        for (int[] row : dp) {
+            Arrays.fill(row, 0); // Filling each row with zeros
+        }
+
+        // Iterating through each element of a and b arrays to fill dp array
+        for (int i = 1; i <= m; i++) { // Loop over rows
+            for (int j = i; j <= n; j++) { // Loop over columns
+                // Calculate the maximum dot product at this position
+                // We have two choices here:
+                // 1. Include the current elements of both arrays and add their product to the previous maximum dot product.
+                // 2. Skip the current element from the second array and keep the previous maximum dot product.
+                // We take the maximum of these two choices as the new maximum dot product.
+                dp[i][j] = Math.max(dp[i - 1][j - 1] + a[j - 1] * b[i - 1], dp[i][j - 1]);
+            }
+        }
+
+        // Return the maximum dot product which is stored at dp[m][n]
+        return dp[m][n];
+    }
+}
+
+
+
+
+
