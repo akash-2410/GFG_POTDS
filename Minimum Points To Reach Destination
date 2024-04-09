@@ -1,0 +1,62 @@
+-------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------
+Given a m*n grid with each cell consisting of positive, negative, or zero point. We can move across a cell only if we have positive points. 
+Whenever we pass through a cell, points in that cell are added to our overall points, the task is to find minimum initial points to reach cell (m-1, n-1) from (0, 0) by following 
+these certain set of rules :
+1. From a cell (i, j) we can move to (i + 1, j) or (i, j + 1).
+2. We cannot move from (i, j) if your overall points at (i, j) are <= 0.
+3. We have to reach at (n-1, m-1) with minimum positive points i.e., > 0.
+-------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------
+Example 1:
+
+Input: 
+m = 3, n = 3 
+points = {{-2,-3,3}, 
+          {-5,-10,1},
+          {10,30,-5}} 
+Output: 
+7 
+Explanation: 7 is the minimum value to reach the destination with positive throughout the path. Below is the path. (0,0) -> (0,1) -> (0,2) -> (1, 2) -> (2, 2) 
+We start from (0, 0) with 7, we reach (0, 1) with 5, (0, 2) with 2, (1, 2) with 5, (2, 2) with and finally we have 1 point (we needed greater than 0 points at the end).
+-------------------------------------------------------------------------------------------Intution with Code----------------------------------------------------------------------------------
+class Solution {
+    public int minPoints(int points[][], int m, int n) {
+        // Initialize a 2D array to store the minimum points required to reach the bottom-right cell.
+        int[][] dp = new int[m][n];
+        
+        // Calculate the minimum points required to reach the bottom-right cell
+        // and store it in the bottom-right cell.
+        dp[m-1][n-1] = Math.max(1, 1 - points[m-1][n-1]);
+        
+        // Iterate through the grid starting from the bottom-right cell and moving towards the top-left cell.
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                // Skip the processing if we are at the bottom-right cell.
+                if (i == m - 1 && j == n - 1)
+                    continue;
+                
+                // Initialize the variable to store the minimum points required to reach the current cell.
+                int minPointsRequired = Integer.MAX_VALUE;
+                
+                // Check if moving downwards is possible and update the minimum points required accordingly.
+                if (i + 1 < m)
+                    minPointsRequired = Math.min(minPointsRequired, dp[i + 1][j]);
+                
+                // Check if moving rightwards is possible and update the minimum points required accordingly.
+                if (j + 1 < n)
+                    minPointsRequired = Math.min(minPointsRequired, dp[i][j + 1]);
+                
+                // Calculate the minimum points required to reach the current cell,
+                // considering the points at the current cell.
+                dp[i][j] = Math.max(1, minPointsRequired - points[i][j]);
+            }
+        } 
+        // Return the minimum points required to reach the top-left cell.
+        return dp[0][0];
+    }
+}
+
+
+
+
+
+
