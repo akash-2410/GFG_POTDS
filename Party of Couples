@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------
+You are given an integer array arr[] of size n, representing n number of people in a party, each person is denoted by an integer. 
+Couples are represented by the same number ie: two people have the same integer value, it means they are a couple. Find out the only single person in the party of couples.
+
+NOTE: It is guarantee that there exist only one single person in the party.
+
+-------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 5
+arr = {1, 2, 3, 2, 1}
+Output: 
+3
+Explaination: Only the number 3 is single.
+-------------------------------------------------------------------------------------------Code with Explanation----------------------------------------------------------------------------------------------
+class Solution{
+    static int findSingle(int n, int arr[]){
+        // code here
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans^=arr[i];  //XOR all the elements so that if it find same lement then it willl be 0 and if not found same then the single number will be left at last
+        }
+        return ans;
+    }
+}
+
+
+
+
