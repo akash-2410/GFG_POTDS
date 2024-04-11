@@ -1,0 +1,49 @@
+------------------------------------------------------------------------------------------------Question-----------------------------------------------------------------------------------------
+Given an integer number n, which is a decimal representation of Gray Code. Find the binary equivalent of the Gray Code & return the decimal representation of the binary equivalent
+------------------------------------------------------------------------------------------------Example-----------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 4
+Output: 
+7
+Explanation:
+Given 4, its gray code =  110.
+Binary equivalent of the gray code 110 is 100.
+Return 7 representing gray code 100.
+------------------------------------------------------------------------------------------Intution and Code--------------------------------------------------------------------------------------
+class Solution{
+    
+public static int grayToBinary(int n) {
+
+    // ArrayList to store the binary representation of the gray code
+    ArrayList<Integer> temp = new ArrayList<>();
+    
+    // Convert the gray code to binary by iterating until n becomes 0
+    while(n != 0) {
+        // Check if the least significant bit of n is 1
+        if((n & 1) == 1)
+            temp.add(1); // Add 1 to the temporary list if the LSB is 1
+        else
+            temp.add(0); // Add 0 if the LSB is 0
+        n >>= 1; // Right shift n by 1 to process the next bit
+    }
+    
+    // Reverse the list to get the binary representation in correct order
+    Collections.reverse(temp);
+    
+    // Convert the binary representation from gray code to binary
+    // by XORing adjacent bits starting from the second bit
+    for(int i = 1; i < temp.size(); i++) {
+        temp.set(i, temp.get(i - 1) ^ temp.get(i)); // XOR operation
+    }
+    
+    // Calculate the decimal value of the binary representation
+    int ans = 0, j = 0;
+    for(int i = temp.size() - 1; i >= 0; i--) {
+        if(temp.get(i) == 1)
+            ans += Math.pow(2, j); // If the bit is 1, add 2^j to the result
+        j++;
+    }
+    
+    return ans; // Return the decimal value
+}
