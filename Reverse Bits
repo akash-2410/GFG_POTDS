@@ -1,0 +1,44 @@
+-----------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------
+Given a number x, reverse its binary form and return the answer in decimal.
+-----------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------
+Example 1:
+Input:
+x = 1
+Output:
+2147483648 
+Explanation:
+Binary of 1 in 32 bits representation-
+00000000000000000000000000000001
+Reversing the binary form we get, 
+10000000000000000000000000000000,
+whose decimal value is 2147483648.
+
+--------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------
+It initializes an empty string s to store the binary representation of the reversed bits.
+It iterates through each bit of the input x from the least significant bit to the most significant bit (from index 0 to 31).
+For each bit, it checks if it is set (equals 1) or not. If set, it appends '1' to the string s; otherwise, it appends '0'.
+After constructing the string s, it initializes a variable ans to store the result of reversing the bits.
+It iterates through each character in the string s (from index 0 to 31) and calculates the decimal value by using the position of the set bits and adding it to ans.
+Finally, it returns ans, which represents the decimal value of the reversed bits of x.
+-----------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------
+class Solution {
+    static Long reversedBits(Long x) {
+        // code here
+         String s = "";
+        for (int i = 0; i <= 31; i++) {
+            if ((x & (1L << i)) != 0) {
+                s = '1' + s;
+            } else {
+                s = '0' + s;
+            }
+        }
+
+        long ans = 0;
+        for (int i = 0; i <= 31; i++) {
+            if (s.charAt(i) == '1') {
+                ans += Math.pow(2, i);
+            }
+        }
+        return ans;
+    }
+};
