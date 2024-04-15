@@ -1,0 +1,54 @@
+-----------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------
+Given two arrays a and b both of size n. Given q queries in an arrray query each having a positive integer x denoting an index of the array a. 
+For each query, your task is to find all the elements less than or equal to a[x] in the array b.
+-----------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 3
+a[] = {4,1,2}
+b[] = {1,7,3}
+q = 2
+query[] = {0,1}
+Output : 
+2
+1
+Explanation: 
+For 1st query, the given index is 0, a[0] = 4. There are 2 elements(1 and 3) which are less than or equal to 4.
+For 2nd query, the given index is 1, a[1] = 1. There exists only 1 element(1) which is less than or equal to 1.
+-----------------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------
+Input Parameters: The method takes in several parameters:
+a[]: An array of integers representing some elements.
+b[]: Another array of integers representing other elements.
+n: The size of array a[].
+query[]: An array of indices to be queried against array a[].
+q: The number of queries.
+
+Initialization: An array ans[] is initialized to store the answers for each query. Its size is determined by the number of queries (q).
+
+Loop through Queries: The method loops through each query index i in the query[] array.
+
+Counting Elements: For each query index i, it retrieves the value from the a[] array at index i. Let's call this value val.
+
+Comparing with Elements in Array b[]: It then iterates through all elements of array b[] and counts how many elements in b[] are less than or equal to val.
+
+Storing Result: The count (c) is stored in the ans[] array at index k, where k is incremented in each iteration.
+
+Return: Finally, the method returns the ans[] array containing the counts for each query.
+-----------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------
+class Solution
+{
+    public static int[] countElements(int a[], int b[], int n, int query[], int q)
+    {
+
+    int ans [] = new int[q];
+        int k = 0;
+        for(int i : query){
+            int val = a[i];
+            int c = 0;
+            for(int j : b){
+                if(j <= val)c++;
+            }
+            ans[k++] = c;
+        }
+        return ans;}
+}
