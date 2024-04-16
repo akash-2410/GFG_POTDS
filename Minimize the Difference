@@ -1,0 +1,62 @@
+----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+You are given an array arr of size n. You have to remove a subarray of size k , such that the difference between the maximum and minimum values of the remaining array is minimized.
+Find the minimum value obtained after performing the operation of the removal of the subarray and return it.
+--------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 5
+k = 3
+arr = {1, 2, 3, 4, 5}
+Output: 
+1
+Explanation: 
+We can remove first subarray of length 3(i.e. {1, 2, 3}) then remaining array will be {4,5} and the difference of maximum and minimum element will be 1 i.e 5 - 4 = 1
+----------------------------------------------------------------------------------------------Intution and Code--------------------------------------------------------------------------------
+class Solution {
+    // Define a method to minimize the difference
+    public static int minimizeDifference(int n, int k, int[] arr) {
+        // Initialize arrays to store maximum and minimum values on the right side
+        int rightmx[] = new int[n]; // Array to store maximum values
+        int rightmn[] = new int[n]; // Array to store minimum values
+        
+        // Initialize the last element of both arrays with the last element of the given array
+        rightmx[n - 1] = arr[n - 1];
+        rightmn[n - 1] = arr[n - 1];
+        
+        // Loop through the array from right to left to fill in the maximum and minimum values
+        for (int i = n - 2; i >= 0; i--) {
+            // Update the minimum value at index i by taking the minimum between the current element and the previous minimum
+            rightmn[i] = Math.min(rightmn[i + 1], arr[i]);
+            // Update the maximum value at index i by taking the maximum between the current element and the previous maximum
+            rightmx[i] = Math.max(rightmx[i + 1], arr[i]);
+        }
+        
+        // Initialize variables for sliding window approach
+        int i = 0, j = k - 1; // i is the start of the window, j is the end of the window
+        int mn = Integer.MAX_VALUE, mx = Integer.MIN_VALUE; // Initialize mn and mx with extreme values
+        int ans = Integer.MAX_VALUE; // Initialize ans with maximum possible value
+        
+        // Slide the window through the array
+        while (j < n) {
+            // If i is not at the beginning of the array, update mn and mx
+            if (i != 0) {
+                mn = Math.min(arr[i - 1], mn);
+                mx = Math.max(arr[i - 1], mx);
+            }
+            // Calculate temporary maximum and minimum values for the current window
+            int temp1 = mx, temp2 = mn;
+            if (j != n - 1) {
+                temp1 = Math.max(mx, rightmx[j + 1]);
+                temp2 = Math.min(mn, rightmn[j + 1]);
+            }
+            // Update the answer by taking the minimum absolute difference between temporary maximum and minimum values
+            ans = Math.min(ans, Math.abs(temp1 - temp2));
+            // Slide the window by incrementing i and j
+            i++;
+            j++;
+        }
+        // Return the minimum absolute difference found
+        return ans;
+    }
+}
+  
