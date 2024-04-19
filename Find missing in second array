@@ -1,0 +1,56 @@
+----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Given two integer arrays a of size n and b of size m, the task is to find the numbers which are present in the first array a, but not present in the second array b.
+
+----------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 6, m = 5
+a[] = {1, 2, 3, 4, 5, 10}
+b[] = {2, 3, 1, 0, 5}
+Output: 
+4 10
+Explanation: 
+4 and 10 are present in first array, but not in second array.
+
+Example 2:
+Input: 
+n = 5, m = 5
+a[] = {4, 3, 5, 9, 11}
+b[] = {4, 9, 3, 11, 10}
+Output: 
+5  
+Explanation: 
+Second array does not contain element 5.
+----------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------
+ArrayList for Storing Missing Elements: The function findMissing returns an ArrayList<Integer> which will contain the missing elements.
+
+Set to Store Elements of Array 'b': A HashSet named 's' is initialized to store the elements of array 'b'. 
+This will allow for efficient lookups to check whether an element from array 'a' exists in array 'b'.
+
+Iterating Over Array 'b' and Adding Elements to Set: The code iterates over each element of array 'b' and adds it to the set 's'.
+This is done to prepare for efficient checking of existence of elements from array 'a' in 'b'.
+
+Finding Missing Elements: Another loop iterates over each element of array 'a'. For each element 'el' in array 'a', it checks if 'el' exists in the set 's'
+(which contains elements of array 'b'). If 'el' is not found in 's', it means 'el' is missing from array 'b', so it's added to the ArrayList<Integer> 'ans'.
+
+Returning the ArrayList: Finally, the function returns the ArrayList<Integer> 'ans' which contains all the missing elements from array 'a' when compared to array 'b'.
+
+----------------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------
+
+class Solution
+{
+    ArrayList<Integer> findMissing(int a[], int b[], int n, int m)
+    {
+        ArrayList<Integer> ans=new ArrayList<>();
+        Set<Integer> s=new HashSet<>();
+        
+        for(int el:b)
+        s.add(el);
+        
+        for(int el:a){
+            if(!s.contains(el))
+            ans.add(el);
+        }
+        return ans;
+    } 
+}
