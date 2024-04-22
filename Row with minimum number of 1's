@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Given a 2D binary matrix(1-based indexed) a of dimensions nxm , determine the row that contains the minimum number of 1's.
+Note: The matrix contains only 1's and 0's. Also, if two or more rows contain the minimum number of 1's, the answer is the lowest of those indices.
+---------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 4,m = 4
+a = [[1, 1, 1, 1],
+     [1, 1, 0, 0], 
+     [0, 0, 1, 1],
+     [1, 1, 1, 1]]
+Output:
+2
+Explanation:
+Rows 2 and 3 contain the minimum number 
+of 1's(2 each).Since,row 2 is less than row 3.
+Thus, the answer is 2.
+
+Example 2:
+Input:
+n = 3,m = 3
+a = [[0, 0, 0],
+     [0, 0, 0],
+     [0, 0, 0]]
+Output:
+1
+Explanation:
+All the rows contain the same number 
+of 1's(0 each).Among them, index 1 
+is the smallest, so the answer is 1.
+---------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------
+Initialize variables ans and mn where ans will store the index of the row with the minimum number of occurrences of 1,
+and mn will store the count of 1s in that row. ans is initialized to -1 to indicate that no row has been found yet, 
+\and mn is initialized to Integer.MAX_VALUE to ensure that any row will have fewer occurrences of 1 than this initial maximum value.
+Iterate over each row of the matrix using the variable i.
+Initialize a variable one to count the number of occurrences of 1 in the current row.
+Iterate over each column of the matrix using the variable j.
+If the current element a[i][j] is 1, increment the counter one.
+After iterating through all columns of the current row, compare the count one with the current minimum count mn. If one is less than mn, update mn to one and update ans to i + 1, 
+where i + 1 represents the 1-based index of the row.
+Repeat steps 2-6 for all rows.
+After processing all rows, return the index ans which represents the row with the minimum number of occurrences of 1.
+---------------------------------------------------------------------------------------------xCode--------------------------------------------------------------------------------------------
+class Solution {
+   int minRow(int n, int m, int a[][]) {
+        // code here
+        int ans=-1,mn=Integer.MAX_VALUE,one=0;
+        for(int i=0;i<n;i++){
+            one=0;
+            for(int j=0;j<m;j++){
+                if(a[i][j]==1)one++;
+            }
+            if(one<mn){
+                mn=one;
+                ans=i+1;
+            }
+        }
+        return ans;
+    }
+};
+
+
+
+
+
+
