@@ -1,0 +1,48 @@
+----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Rohan has a special love for the matrices especially for the first element of the matrix. Being good at Mathematics, he also loves to solve the different problem on the matrices.
+So one day he started to multiply the matrix with the original matrix.  The elements of the original matrix a are given by [a00=1 , a01=1, a10=1, a11=0].
+Given the power of the matrix, n calculate the an and return the a10 element mod 1000000007.
+
+
+
+----------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 3
+Output: 
+2 
+Explanation: Take the cube of the original matrix 
+i.e a3 and the (a10)th element is 2.
+
+Example 2:
+Input: 
+n = 4
+Output: 
+3
+Explanation: Take the cube of the original matrix 
+i.e a4 and the (a10)th element is 3.
+
+
+
+----------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------
+If the input n is either 1 or 2, the function returns 1. This is because in a Fibonacci-like series, the first two elements are always 1.
+For n greater than 2, the function iterates through a loop starting from 3 up to n. During each iteration, it calculates the next element by summing up the previous two elements.
+The variables a and b are initialized to 1 each, representing the first and second elements of the series, respectively.
+Inside the loop, the next element (ans) is calculated as the sum of a and b, modulo 10^9 + 7 (a commonly used prime number for modulo arithmetic).
+a is updated to hold the previous value of b, and b is updated to hold the previous value of ans.
+After the loop completes, ans holds the value of the nth element of the series, and it's returned.
+----------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------
+class Solution {
+
+         static int firstElement(int n) {
+        // code here
+        if(n==1 || n==2)return 1;
+        int a=1,b=1,ans=0,mod=1000000007;
+        for(int i=3;i<=n;i++){
+            ans=(a+b)%mod;
+            a=b;
+            b=ans;
+        }
+        return ans;
+     }
+}
