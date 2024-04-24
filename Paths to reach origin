@@ -1,0 +1,51 @@
+--------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------
+You are standing on a point (x, y) and you want to go to the origin (0, 0) by taking steps either left or down i.e.
+from each point you are allowed to move either in (x-1, y) or (x, y-1). Find the number of paths from point to origin.
+--------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------
+Example 1:
+Input:
+x = 3, y = 0 
+Output: 
+1
+Explanation: Path used was -  (3,0)  --> ( 2,0) --> (1,0) --> (0,0).We can see that there is no other path than this, so we return 1.
+
+Example 2:
+Input:
+x = 3, y = 6
+Output: 
+84 
+Explanation:
+There are total 84 possible paths.
+--------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------
+The class has a static variable mod initialized to 1000000007, which appears to be a constant used for modulo operations.
+The help method is a recursive helper function that calculates the number of ways to reach cell (x, y) in the grid. 
+It takes three arguments: x and y representing the current cell, and a 2D array dp for dynamic programming to store intermediate results.
+In the help method:
+If x and y are both 0, it means we've reached the destination cell, so it returns 1, indicating one way to reach this cell.
+If either x or y is negative, it means we've moved out of the grid, so it returns 0, indicating no way to reach this cell.
+If the number of ways to reach cell (x, y) has already been computed and stored in the dp array, it returns that value directly.
+Otherwise, it recursively calculates the number of ways to reach cell (x, y) by moving one step either downwards (x-1, y) or rightwards (x, y-1), sums up these possibilities,
+takes the modulo mod, and stores the result in the dp array before returning it.
+The ways method initializes the dynamic programming array dp, fills it with -1 to indicate that values are not yet computed, 
+and then calls the help method to find the number of ways to reach the cell (n, m).
+--------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------
+class Solution
+{
+     static int mod = 1000000007;
+    static int help(int x,int y,int dp[][]){
+        if(x==0 && y==0)return 1;
+        if(x<0 || y<0)return 0;
+        if(dp[x][y]!=-1)return dp[x][y];
+        int a = help(x-1,y,dp);
+        int b = help(x,y-1,dp);
+        return dp[x][y] = (a+b)%mod;
+    }
+    public static int ways(int n, int m)
+    {
+        // complete the function
+        int dp[][] = new int[n+1][m+1];
+        for(int temp[]:dp)Arrays.fill(temp,-1);
+        return help(n,m,dp);
+    }
+
+}
