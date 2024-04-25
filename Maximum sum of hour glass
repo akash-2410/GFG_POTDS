@@ -1,0 +1,46 @@
+------------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------
+Given two integers n, m and a 2D matrix mat of dimensions nxm, the task is to find the maximum sum of an hourglass.
+An hourglass is defined as a part of the matrix with the following form:
+https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/705187/Web/Other/blobid1_1710860182.png
+Return -1 if any hourglass is not found.
+------------------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 3, m = 3
+mat = [[1, 2, 3],
+       [4, 5, 6],
+       [7, 8, 9]]
+Output:
+35
+Explanation:
+There is only one hour glass which is
+1 2 3
+  5
+7 8 9   and its sum is 35.
+------------------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------
+Nested Loop Iteration: The code begins with two nested loops iterating over the rows and columns of the matrix. It stops at n-2 and m-2 respectively, 
+which ensures that we don't go out of bounds while forming the pattern.
+Pattern Summation: Within these nested loops, it calculates the sum s of a specific pattern formed by selecting elements from the matrix.
+The pattern appears to be a 3x3 submatrix with a particular arrangement of elements.
+Max Sum Tracking: For each valid pattern encountered, it compares the sum s with the current maximum sum (max). If s is greater than max, it updates max to s.
+Boundary Check: After iterating through all possible patterns, it checks if max has been updated from its initial value of Integer.MIN_VALUE.
+If not, it means no valid pattern was found, and it returns -1. Otherwise, it returns the maximum sum.
+------------------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------
+class Solution {
+    int findMaxSum(int n, int m, int mat[][]) {
+        // code here
+        int max=Integer.MIN_VALUE;
+        for(int i=0;i<n-2;i++)
+        {
+            for(int j=0;j<m-2;j++)
+            {
+                int s=mat[i][j]+mat[i][j+1]+mat[i][j+2]+mat[i+1][j+1]+mat[i+2][j]+mat[i+2][j+1]+mat[i+2][j+2];
+                if(s>max)
+                max=s;
+            }
+        }
+        if(max==Integer.MIN_VALUE)
+        return -1;
+        return max;
+    }
+};
