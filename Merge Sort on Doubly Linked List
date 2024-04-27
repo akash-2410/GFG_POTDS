@@ -1,0 +1,98 @@
+---------------------------------------------------------------------------------------QUESTION-------------------------------------------------------------------------------------------------
+Given Pointer/Reference to the head of a doubly linked list of n nodes, the task is to Sort the given doubly linked list using Merge Sort in both non-decreasing and non-increasing order.
+---------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------
+Example 1:
+
+Input:
+n = 8
+value[] = {7,3,5,2,6,4,1,8}
+Output:
+1 2 3 4 5 6 7 8
+8 7 6 5 4 3 2 1
+Explanation: After sorting the given
+linked list in both ways, resultant
+matrix will be as given in the first
+two line of output, where first line
+is the output for non-decreasing
+order and next line is for non-
+increasing order.
+Example 2:
+
+Input:
+n = 5
+value[] = {9,15,0,-1,0}
+Output:
+-1 0 0 9 15
+15 9 0 0 -1
+Explanation: After sorting the given
+linked list in both ways, the
+resultant list will be -1 0 0 9 15
+in non-decreasing order and 
+15 9 0 0 -1 in non-increasing order.
+
+---------------------------------------------------------------------------------------IntuTION-------------------------------------------------------------------------------------------------
+merge(Node first, Node second):
+This method merges two sorted doubly linked lists.
+It takes two nodes first and second as input, which represent the heads of the two sorted lists.
+It compares the data of the first nodes of the lists (first.data and second.data).
+If the data in the first node is smaller, it recursively merges the next node of the first list (first.next) with the entire second list (second).
+If the data in the second node is smaller or equal, it recursively merges the entire first list (first) with the next node of the second list (second.next).
+It then adjusts the prev pointers accordingly and returns the head of the merged list.
+getMid(Node head):
+This method finds the midpoint of a doubly linked list.
+It initializes two pointers, fast and slow, both pointing to the head of the list.
+It moves the fast pointer twice as fast as the slow pointer until fast reaches the end of the list or the second-to-last node.
+At each step, it moves the slow pointer one step ahead.
+Once fast reaches the end, slow will be at the midpoint of the list.
+It then separates the list at the midpoint by setting the next pointer of the node before slow to null.
+Finally, it returns the node after slow, which represents the head of the second half of the list.
+sortDoubly(Node head):
+This method sorts a doubly linked list using merge sort.
+It first checks if the list is empty or has only one element. If so, it returns the list as it is already sorted.
+It then finds the midpoint of the list using the getMid() method.
+It recursively sorts the first half of the list (head) and the second half (mid).
+Finally, it merges the sorted halves using the merge() method and returns the head of the sorted list.
+
+---------------------------------------------------------------------------------------Code-------------------------------------------------------------------------------------------------
+class Solution {
+     public Node merge(Node first, Node second) {
+        if (first == null) return second;
+        if (second == null) return first;
+        
+        if (first.data < second.data) {
+            first.next = merge(first.next, second);
+            first.next.prev = first;
+            first.prev = null;
+            return first;
+        } else {
+            second.next = merge(first, second.next);
+            second.next.prev = second;
+            second.prev = null;
+            return second;
+        }
+    }
+    
+    public Node getMid(Node head) {
+        Node fast = head, slow = head;
+        
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        
+        Node temp = slow.next;
+        slow.next = null;
+        return temp;
+    }
+    
+    public Node sortDoubly(Node head) {
+        if (head == null || head.next == null) return head;
+        
+        Node mid = getMid(head);
+        
+        head = sortDoubly(head);
+        mid = sortDoubly(mid);
+        
+        return merge(head, mid);
+    }
+}
