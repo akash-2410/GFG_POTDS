@@ -1,0 +1,54 @@
+----------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Given a singly linked list having n nodes, your task is to remove every kth node from the linked list. 
+----------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 8
+linked list: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 
+k = 2
+Output: 
+1 -> 3 -> 5 -> 7
+Explanation: 
+After removing every 2nd node of the linked list, the resultant linked list will be: 1 -> 3 -> 5 -> 7.
+
+Example 2:
+Input:
+n = 10
+linked list: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9 -> 10 
+k = 3
+Output: 
+1 -> 2 -> 4 -> 5 -> 7 -> 8 -> 10
+Explanation: 
+After removing every 3rd node of the linked list, the resultant linked list will be: 1 -> 2 -> 4 -> 5 -> 7 -> 8 -> 10.
+----------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------
+Check if k is 1: If k is 1, it means every node needs to be deleted, so the method returns null, effectively deleting the entire linked list.
+Iterating through the linked list: The code uses a while loop to iterate through the linked list until the end is reached (temp != null).
+Tracking the previous node: It keeps track of the previous node (prev) to manipulate the pointers for deletion.
+Deleting kth node: When the count (c) reaches k, it means the current node (temp) needs to be deleted.
+The code skips over this node by updating the next pointer of the previous node to skip over the current node.
+Incrementing count and moving to the next node: After handling each node, the count is incremented, and the loop moves to the next node.
+Returning the modified head: Once all nodes have been processed, the original head is returned. Since the method modifies the linked list in place, 
+it does not need to return anything other than the head.
+----------------------------------------------------------------------------------------------Code--------------------------------------------------------------------------------------------
+
+class Solution
+{
+    /*You are required to complete this method*/
+	   Node delete(Node head, int k)
+    {
+	  // Your code here
+	  if(k==1)return null;
+      Node temp=head,prev=null;
+      int c=1;
+      while(temp!=null){
+          if(c==k){
+              c=0;
+              prev.next=temp.next;
+          }
+          else prev=temp;
+          c++;
+          temp=temp.next;
+      }
+      return head;
+    }
+}
