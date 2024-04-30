@@ -1,0 +1,79 @@
+---------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------
+Given two decimal numbers, num1 and num2, represented by linked lists of size n and m respectively. The task is to return a linked list that represents the sum of these two numbers.
+For example, the number 190 will be represented by the linked list, 1->9->0->null, similarly 25 by 2->5->null. Sum of these two numbers is 190 + 25 = 215,
+which will be represented by 2->1->5->null. You are required to return the head of the linked list 2->1->5->null.
+Note: There can be leading zeros in the input lists, but there should not be any leading zeros in the output list.
+---------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 2
+num1 = 45 (4->5->null)
+m = 3
+num2 = 345 (3->4->5->null)
+Output: 
+3->9->0->null  
+Explanation: 
+For the given two linked list (4 5) and (3 4 5), after adding the two linked list resultant linked list will be (3 9 0).
+---------------------------------------------------------------------------------------------Intution with COde---------------------------------------------------------------------------------
+class Solution {
+    // Function to reverse a linked list
+    static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+        Node next = null;
+
+        while (current != null) {
+            next = current.next; // Store the next node temporarily
+            current.next = prev; // Reverse the current node
+            prev = current; // Move pointers one position ahead
+            current = next; // Move pointers one position ahead
+        }
+
+        return prev; // Return the new head of the reversed list
+    }
+
+    // Function to add two linked lists representing numbers
+    static Node addTwoLists(Node num1, Node num2) {
+        // Reverse both input linked lists
+        num1 = reverse(num1);
+        num2 = reverse(num2);
+
+        Node sum = null; // Initialize the sum linked list
+        int carry = 0; // Initialize the carry
+
+        // Traverse both input linked lists or if carry is still there
+        while (num1 != null || num2 != null || carry > 0) {
+            int newVal = carry; // Initialize the new value to carry
+
+            // Add data from both lists and carry
+            if (num1 != null) {
+                newVal += num1.data; // Add data from the first list
+                num1 = num1.next; // Move to the next node in the first list
+            }
+            if (num2 != null) {
+                newVal += num2.data; // Add data from the second list
+                num2 = num2.next; // Move to the next node in the second list
+            }
+
+            carry = newVal / 10; // Update carry for the next calculation
+            newVal = newVal % 10; // Update new value for the current node
+
+            Node newNode = new Node(newVal); // Create a new node with the new value
+
+            newNode.next = sum; // Link the new node to the sum linked list
+            sum = newNode; // Update the sum linked list
+        }
+
+        // Remove leading zeros from the sum linked list
+        while (sum != null && sum.data == 0) {
+            Node temp = sum.next; // Store the next node
+            sum.next = null; // Disconnect the current node
+            sum = temp; // Move to the next node
+        }
+
+        // If the sum linked list is empty, return a single node with value 0
+        if (sum == null)
+            return new Node(0);
+        return sum; // Return the sum linked list
+    }
+}
