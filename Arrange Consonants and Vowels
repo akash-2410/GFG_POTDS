@@ -1,0 +1,60 @@
+---------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------
+Given a singly linked list having n nodes containing english alphabets ('a'-'z'). 
+Rearrange the linked list in such a way that all the vowels come before the consonants while maintaining the order of their arrival. 
+---------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------
+Example 1:
+Input:
+n = 9
+linked list: a -> b -> c -> d -> e -> f -> g -> h -> i 
+Output: 
+a -> e -> i -> b -> c -> d -> f -> g -> h
+Explanation: 
+After rearranging the input linked list according to the condition the resultant linked list will be as shown in output.
+
+Example 2:
+Input:
+n = 8
+linked list: a -> b -> a -> b -> d -> e -> e -> d 
+Output: 
+a -> a -> e -> e -> b -> b -> d -> d
+Explanation: 
+After rearranging the input linked list according to the condition the resultant linked list will be as shown in output.
+---------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------
+You create two new nodes vowel and cons to represent the heads of lists for vowels and consonants respectively.
+You initialize vowelH and consH to hold the heads of the two lists for later reassembly.
+You iterate through the given linked list represented by head.
+Inside the loop, you examine the data of each node (temp) and based on whether it's a vowel or a consonant, you append it to the respective list.
+After iterating through all nodes, you set the next of the last node in the consonant list to null to terminate the list.
+You connect the last node of the vowel list to the head of the consonant list.
+Finally, you return the head of the vowel list.
+---------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------
+class Solution {
+    
+    public Node arrangeCV(Node head){
+        //write code here and return the head of changed linked list
+         Node vowel = new Node('a');
+         Node cons = new Node('b');
+         
+         Node vowelH = vowel;
+         Node consH  = cons;
+         
+         while (head != null){
+             char temp = head.data;
+             
+             if(temp == 'a' || temp == 'e' || temp == 'i' || temp == 'o' || temp == 'u'){
+                 vowel.next = head;
+                 vowel = vowel.next;
+             }
+             else{
+                 cons.next = head;
+                 cons = cons.next;
+             }
+             head = head.next;
+         }
+         cons.next = null;
+         vowel.next = consH.next;
+         
+         
+         return vowelH.next;
+    }
+}
