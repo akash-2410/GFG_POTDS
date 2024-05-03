@@ -1,0 +1,62 @@
+----------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------
+Given a binary tree having n nodes and an integer k. Print all nodes that are at distance k from the root (root is considered at distance 0 from itself). 
+Nodes should be printed from left to right.
+----------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------
+Example 1:
+
+Input:
+k = 0
+      1
+    /   \
+   3     2
+Output: 
+1
+Explanation: 
+1 is the only node which is 0 distance from the root 1.
+
+Example 2:
+Input:
+k = 3
+        1
+       /
+      2
+       \
+        1
+      /  \
+     5    3
+Output: 
+5 3
+Explanation:  
+5 and 3 are the nodes which are at distance 3 from the root 3.
+Here, returning 3 5 will be incorrect.
+----------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------------
+Base Cases:
+If the root is null, it means there are no more nodes to explore, so the method returns the current state of the answer ArrayList.
+If k equals 0, it means the current node is k distance away from the root. So, it adds the data of the current node to the answer ArrayList and returns it.
+Recursive Steps:
+If k is not 0 yet, it recursively calls the helper method for the left and right children of the current node, with k decremented by 1.
+It updates the answer ArrayList with the results of these recursive calls.
+Return:
+Finally, it returns the answer ArrayList, which contains all the values of nodes that are k distance away from the root.
+----------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------------
+class Tree
+{
+    ArrayList<Integer> Kdistance(Node root, int k)
+     {
+          // Your code here
+          return helper(root, k, new ArrayList<Integer>());
+     }
+     
+     
+     public ArrayList<Integer> helper(Node root, int k, ArrayList<Integer> ans){
+         if(root == null) return ans;
+         if(k == 0){
+             ans.add(root.data);
+             return ans;
+         }
+         
+         ans = helper(root.left, k-1, ans);
+         ans = helper(root.right, k-1, ans);
+         return ans;
+     }
+}
