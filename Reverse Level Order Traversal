@@ -1,0 +1,65 @@
+--------------------------------------------------------------------------------------Question----------------------------------------------------------------------------------------------------
+Given a binary tree of size n, find its reverse level order traversal. ie- the traversal must begin from the last level.
+--------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------------
+Example 1:
+Input :
+        1
+      /   \
+     3     2
+
+Output: 
+3 2 1
+Explanation:
+Traversing level 1 : 3 2
+Traversing level 0 : 1
+
+Example 2:
+Input :
+       10
+      /  \
+     20   30
+    / \ 
+   40  60
+
+Output: 
+40 60 20 30 10
+Explanation:
+Traversing level 2 : 40 60
+Traversing level 1 : 20 30
+Traversing level 0 : 10
+--------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------
+The class has two member variables: ans, which is an ArrayList to store the traversal result, and q, which is a Queue (implemented as a LinkedList) to perform breadth-first
+traversal of the tree.
+The reverseLevelOrder method initiates the breadth-first traversal by calling the bfs method with the root node of the tree. After traversal, 
+it reverses the ans list to get the reverse level order traversal.
+The bfs method performs breadth-first traversal starting from the root node. It iteratively processes each node in the queue, 
+adding its data to the ans list. Then, it adds the left child (if exists) followed by the right child (if exists) to the queue.
+The traversal goes level by level, adding nodes from left to right on each level.
+After the traversal is complete, the ans list contains the level order traversal of the tree. Then, the list is reversed to obtain the reverse level order traversal.
+--------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------------
+class Tree
+{
+    ArrayList<Integer> ans = new ArrayList<>();
+    Queue <Node> q = new LinkedList<Node>();
+    public ArrayList<Integer> reverseLevelOrder(Node node) 
+    {
+        bfs(node);
+        Collections.reverse(ans);
+        return ans;
+    }
+    
+    void bfs(Node root){
+        if(root == null) return;
+        q.add(root);
+        while (!q.isEmpty()){
+            Node curr = q.poll();
+            ans.add(curr.data);
+            if(curr.right!=null){
+                q.add(curr.right);
+            }
+            if(curr.left!=null){
+                q.add(curr.left);
+            }
+        }
+    }
+}      
