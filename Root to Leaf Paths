@@ -1,0 +1,82 @@
+__________________________________________________________________________________________QUESTION________________________________________________________________________________________________
+Given a Binary Tree of nodes, you need to find all the possible paths from the root node to all the leaf nodes of the binary tree.
+
+__________________________________________________________________________________________EXAMPLE________________________________________________________________________________________________
+Example 1:
+
+Input:
+       1
+    /     \
+   2       3
+Output: 
+1 2 
+1 3 
+Explanation: 
+All possible paths:
+1->2
+1->3
+Example 2:
+
+Input:
+         10
+       /    \
+      20    30
+     /  \
+    40   60
+Output: 
+10 20 40 
+10 20 60 
+10 30 
+__________________________________________________________________________________________INTUTION________________________________________________________________________________________________
+Input:
+The method Paths takes a Node object root as input, representing the root of the binary tree.
+
+Initialization:
+An ArrayList of ArrayList<Integer> called ans is initialized to store all the paths.
+Another ArrayList<Integer> called temp is initialized to temporarily store the nodes in the current path during traversal
+
+Traversal:
+The traversal method is a recursive function that performs a depth-first search (DFS) traversal of the binary tree.
+If the current node is null, the function returns.
+If the current node is a leaf node (i.e., both left and right child are null), it means a path from the root to this leaf is found. The node's data is added to the temp list, 
+then a copy of temp is added to ans, representing a complete path. After that, the last element is removed from temp.
+If the current node is not a leaf node, its data is added to temp, and the function is called recursively for its left and right children.
+After exploring the left and right subtrees, the last element (representing the current node) is removed from temp to backtrack and explore other paths.
+
+Output:
+After traversing the entire tree, ans contains all the paths from the root to leaf nodes.
+
+Intuition:
+The code employs a recursive DFS approach to traverse the binary tree.
+At each node, it maintains a temp list to track the current path.
+When a leaf node is reached, the path from the root to that leaf is added to the result ans.
+By exploring all paths, the code builds a list of lists containing all possible paths from the root to leaf nodes in the binary tree.
+
+__________________________________________________________________________________________CODE___________________________________________________________________________________________________
+
+class Solution {
+    public static ArrayList<ArrayList<Integer>> Paths(Node root) {
+        // code here
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        ArrayList<Integer> temp = new ArrayList<>();
+        traversal(root,ans,temp);
+        return ans;
+    }
+    
+    static void traversal(Node root,ArrayList<ArrayList<Integer>> ans,ArrayList<Integer> temp){
+         if(root == null) return;
+         if(root.left == null && root.right == null){
+             temp.add(root.data);
+             ArrayList<Integer> temp2 = new ArrayList<>();
+             temp2.addAll(temp);
+             ans.add(temp2);
+             temp.remove(temp.size()-1);
+             return;
+         }
+         temp.add(root.data);
+         traversal(root.left,ans,temp);
+         traversal(root.right,ans,temp);
+         temp.remove(temp.size()-1);
+    }
+}
+        
