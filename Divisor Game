@@ -1,0 +1,50 @@
+_______________________________________________________________________________________________Question___________________________________________________________________________________________
+
+Alice and Bob take turns playing a game, with Alice starting first.
+Initially, there is a number n on the chalkboard. On each player's turn, that player makes a move consisting of:
+
+Choosing any x with 0 < x < n  and n % x == 0.
+Replacing the number n on the chalkboard with n - x.
+Also, if a player cannot make a move, they lose the game.
+Return true if and only if Alice wins the game, assuming both players play optimally.
+
+_______________________________________________________________________________________________Example___________________________________________________________________________________________
+Example 1:
+Input:
+n = 2
+Output: True
+Explanation: Alice chooses 1, and Bob has no more moves.
+ 
+
+Example 2:
+Input:
+n = 3
+Output: False
+Explanation: Alice chooses 1, Bob chooses 1, and Alice has no more moves.
+
+_______________________________________________________________________________________________Intution___________________________________________________________________________________________
+This function divisorGame determines whether Alice can win the divisor game with a given integer n. In this game, 
+Alice and Bob take turns to choose a number x such that 0 < x < n and n % x == 0. 
+The player who cannot make a move loses the game.
+
+Now, let's consider why the function returns true if n is even (n % 2 == 0) and false otherwise:
+
+Even Numbers: When n is even, Alice can always choose x = 1. After Alice's turn, n becomes n - 1, which is odd. 
+Bob can then only choose an odd number (because it must divide n), and the result will be even again, forcing Alice to choose x = 1 on her next turn.
+This cycle continues until n becomes 2, at which point Alice can choose x = 1, leaving Bob with no moves, so Alice wins.
+Odd Numbers: When n is odd, Alice cannot choose x = 1 because 1 doesn't satisfy the condition 0 < x < n. So, Alice can only choose an odd number.
+This makes n even after Alice's turn. Now, Bob can follow the strategy as described above for even numbers, always choosing x = 1 on his turns, 
+leaving Alice with no moves and thus causing her to lose.
+In summary, when n is even, Alice can always force Bob into a position where he has no moves left, ensuring her victory. But when n is odd,
+Bob can always respond in such a way that Alice will eventually be left with no moves, leading to her defeat. Therefore, the function returns true for even n and false for odd n.
+
+_______________________________________________________________________________________________Code______________________________________________________________________________________________
+class Solution {
+    public static boolean divisorGame(int n) {
+        // code here
+        return n % 2 == 0;
+    }
+}
+
+
+
