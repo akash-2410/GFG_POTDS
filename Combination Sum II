@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------------
+Given an array of integers arr, the length of the array n, and an integer k, find all the unique combinations in arr where the sum of the combination is equal to k.
+Each number can only be used once in a combination.
+
+---------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------------
+Example 1:
+Input: 
+n = 5, k = 7
+arr[] = { 1, 2, 3, 3, 5 }
+Output:
+{ { 1, 3, 3 }, { 2, 5 } }
+Explanation:
+1 + 3 + 3 = 7
+2 + 5 = 7
+
+Example 2:
+Input:
+n = 6, k = 35
+arr[] = { 5, 10, 15, 20, 25, 30 }
+Output:
+{ { 5,10, 20 }, { 5, 30 }, { 10, 25 }, { 15, 20 } }
+Explanation:
+5 + 10 + 20 = 35
+5 + 30 = 35
+10 + 25 = 35
+15 + 20 = 35
+
+--------------------------------------------------------------------------------------Intution and Code------------------------------------------------------------------------------------------------------
+class Solution {
+    public List<List<Integer>> CombinationSum2(int arr[], int n, int k) {
+        Arrays.sort(arr); // Sorting the input array in ascending order.
+        List<List<Integer>> res = new ArrayList<>(); // Creating a list to store the resulting combinations.
+        helper(arr, k, res, new ArrayList<>(), 0, 0); // Calling the helper method to find combinations.
+        return res; // Returning the resulting list of combinations.
+    }
+    
+    private void helper(int[] arr, int k, List<List<Integer>> res, List<Integer> list, int sum, int ind){
+        if(sum > k) return; // If the current sum exceeds the target sum 'k', stop processing this branch.
+        if(sum == k){ // If the current sum equals the target sum 'k', add the current combination to the result.
+            res.add(list);
+            return;
+        }
+        for(int i=ind; i<arr.length; i++){ // Iterate through the array from 'ind' index.
+            if(i > ind && arr[i] == arr[i - 1]) continue; // Skip duplicates to avoid generating duplicate combinations.
+            list.add(arr[i]); // Add the current element to the combination.
+            sum += arr[i]; // Update the sum with the current element.
+            helper(arr, k, res, new ArrayList<>(list), sum, i+1); // Recursively call the helper function with updated parameters.
+            list.remove(list.size()-1); // Backtrack: Remove the last element from the combination.
+            sum -= arr[i]; // Backtrack: Subtract the last element from the sum.
+        }
+    }
+}
+
