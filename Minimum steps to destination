@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------
+Given an infinite number line. You start at 0 and can go either to the left or to the right. The condition is that in the ith move, you must take i steps. Given a destination d, 
+find the minimum number of steps required to reach that destination.
+---------------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------
+Example 1:
+Input: d = 2
+Output: 3
+Explaination: The steps takn are +1, -2 and +3.
+
+Example 2:
+Input: d = 10
+Output: 4
+Explaination: The steps are +1, +2, +3 and +4.
+---------------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------
+Incremental Steps: Initially, we start with 0 steps and increase the number of steps by 1 in each iteration. This mimics the process of taking steps one by one to cover a certain distance.
+
+Total Distance Covered: With each step, we add the number of steps taken to the total distance covered (temp). This helps us keep track of how far we've traveled.
+
+Reaching the Target Distance: We continue taking steps until the total distance covered (temp) is greater than or equal to the target distance d. At this point, 
+we stop because we've either reached or surpassed our target.
+
+Handling Odd and Even Differences: If we've exactly reached the target distance, we return the number of steps taken (ans). 
+However, if we've surpassed the target distance (temp > d), we calculate the difference (diff) between the total distance covered and the target distance.
+
+Adjusting Steps for Odd Differences: If the difference (diff) between the total distance covered and the target distance is odd, 
+it means we've gone a bit too far. We need to adjust the number of steps taken to reach exactly the target distance.
+
+If the current number of steps (ans) is even, adding one more step (ans + 1) will bring us closer to the target distance.
+If the current number of steps (ans) is odd, adding two more steps (ans + 2) will bring us closer to the target distance.
+Returning Minimum Steps: Finally, we return the minimum number of steps required to reach the target distance. 
+This accounts for both the case when we've exactly reached the target distance and when we've overshot it slightly.
+---------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------
+class Solution {
+    // Static method to calculate the minimum steps required to reach distance 'd'
+    static int minSteps(int d) {
+        int temp = 0; // Variable to track the total distance covered
+        int ans = 0; // Variable to store the number of steps taken
+
+        // Iterate until the total distance covered is less than the target distance 'd'
+        while (temp < d) {
+            ans++; // Increment the number of steps taken
+            temp += ans; // Update the total distance covered by adding the current step count
+        }
+
+        // If the total distance covered is exactly equal to the target distance 'd'
+        if (temp == d)
+            return ans; // Return the number of steps taken
+
+        // Calculate the difference between the total distance covered and the target distance
+        int diff = temp - d;
+
+        // If the difference is even, it means we can reach 'd' by taking 'ans' steps
+        if (diff % 2 == 0)
+            return ans;
+
+        // If the difference is odd, we need to adjust the number of steps taken
+        // If the current number of steps 'ans' is even, we need to take one more step
+        if (ans % 2 == 0)
+            return ans + 1;
+        else
+            return ans + 2; // If 'ans' is odd, we need to take two more steps
+    }
+}
+
+
+
