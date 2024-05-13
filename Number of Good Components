@@ -1,0 +1,131 @@
+---------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------
+Given an undirected graph with v vertices(numbered from 1 to v) and e edges. Find the number of good components in the graph.
+A component of the graph is good if and only if the component is fully connected.
+Note: A fully connected component is a subgraph of a given graph such that there's an edge between every pair of vertices in the component, the given graph can be a disconnected graph. 
+
+---------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------
+Example 1:
+
+Input: 
+https://media.geeksforgeeks.org/img-practice/good_comp_1-1656905170.png
+e=3 
+v=3
+edges={{1, 2},{1, 3},{3, 2}}
+Output: 
+1
+Explanation: 
+We can see that there is only one component in the graph and in this component there is a edge between any two vertces.
+
+Example 2:
+Input:
+https://media.geeksforgeeks.org/img-practice/PROD/addEditProblem/713974/Web/Other/0b0c03cb-9f66-4c94-8900-8120a171f9a3_1685087973.png
+e=5 
+v=7
+edges={{1, 2},{7, 2},{3, 5},{3, 4},{4, 5}}
+Output: 
+2
+Explanation: 
+We can see that there are 3 components in the graph. For 1-2-7 there is no edge between 1 to 7, so it is not a fully connected component. Rest 2 are individually fully connected component.
+---------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------
+Depth First Search (DFS):
+
+DFS is a graph traversal algorithm that explores as far as possible along each branch before backtracking.
+Here, DFS is used to traverse the graph and identify connected components.
+When DFS visits a vertex, it marks it as visited and explores all its adjacent vertices recursively.
+Counting Vertices and Edges:
+
+The dfs method keeps track of the number of vertices and edges in each connected component.
+For each visited vertex, it increments the count of vertices in the connected component and adds the number of edges connected to that vertex to the total edge count.
+Initializing the Graph:
+
+The findNumberOfGoodComponent method initializes an adjacency list to represent the graph.
+It populates the adjacency list based on the given edges.
+This step sets up the graph data structure for further processing.
+Identifying Connected Components:
+
+The code iterates through all vertices in the graph.
+If a vertex has not been visited, it initiates a DFS traversal to explore the connected component containing that vertex.
+During the DFS traversal, it counts the number of vertices and edges in the connected component.
+Checking for "Good" Connected Components:
+
+For each connected component, the code checks whether the number of edges is equal to the maximum possible number for a complete graph with the same number of vertices.
+If the number of edges satisfies this condition, it counts the connected component as "good".
+This condition ensures that each vertex in the component is connected to every other vertex, forming a complete graph.
+Returning the Count:
+
+The method returns the total count of "good" connected components found in the graph.
+
+
+
+
+---------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------
+class Solution {
+  
+    // Depth First Search (DFS) method to explore the graph
+    private void dfs(int v, int[] vertices, int[] edges, ArrayList<ArrayList<Integer>> adj, int[] visited) {
+        // Mark the current vertex as visited
+        visited[v] = 1;
+        
+        // Increment the count of vertices in the current connected component
+        vertices[0]++;
+        
+        // Add the number of edges connected to the current vertex to the total edge count
+        edges[0] += adj.get(v).size();
+        
+        // Explore all adjacent vertices of the current vertex
+        for (int to : adj.get(v)) {
+            // If the adjacent vertex has not been visited, recursively call DFS on it
+            if (visited[to] == 0) {
+                dfs(to, vertices, edges, adj, visited);
+            }
+        }
+    }
+
+    // Method to find the number of "good" connected components in the graph
+    public int findNumberOfGoodComponent(int e, int v, int[][] edges) {
+        // Initialize an adjacency list to represent the graph
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>(v + 1);
+        for (int i = 0; i <= v; i++) {
+            adj.add(new ArrayList<Integer>());
+        }
+        
+        // Populate the adjacency list based on the given edges
+        for (int[] edge : edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+        
+        // Initialize a variable to store the count of "good" connected components
+        int ans = 0;
+        
+        // Initialize an array to mark visited vertices
+        int[] visited = new int[v + 1];
+        
+        // Iterate through all vertices in the graph
+        for (int i = 1; i <= v; i++) {
+            // If the current vertex has not been visited, it belongs to a new connected component
+            if (visited[i] == 0) {
+                // Initialize arrays to store the count of vertices and edges in the connected component
+                int[] vertices = { 0 };
+                int[] edgeCount = { 0 };
+                
+                // Explore the connected component using DFS
+                dfs(i, vertices, edgeCount, adj, visited);
+                
+                // Since each edge is counted twice, divide the edge count by 2
+                edgeCount[0] /= 2;
+                
+                // Check if the number of edges is equal to the maximum possible number
+                // for a complete graph with the same number of vertices
+                if (edgeCount[0] == (vertices[0] * (vertices[0] - 1)) / 2)
+                    ans++; // If so, increment the count of "good" connected components
+            }
+        }
+        
+        // Return the total count of "good" connected components
+        return ans;
+    }
+}
+
+
+
