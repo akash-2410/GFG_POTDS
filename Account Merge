@@ -1,0 +1,140 @@
+----------------------------------------------------------------------------------------Question--------------------------------------------------------------------------------------------------
+Given a list of accounts of size n where each element accounts [ i ] is a list of strings, where the first element account [ i ][ 0 ]  is a name,
+and the rest of the elements are emails representing emails of the account.
+Geek wants you to merge these accounts. Two accounts belong to the same person if there is some common email to both accounts. 
+Note that even if two accounts have the same name, they may belong to different people as people could have the same name. 
+A person can have any number of accounts initially, but all of their accounts have the same name.
+After merging the accounts, return the accounts in the following format: The first element of each account is the name, and the rest of the elements are emails in sorted order.
+
+Note: Accounts themselves can be returned in any order.
+----------------------------------------------------------------------------------------Example--------------------------------------------------------------------------------------------------
+Example 1:
+
+Input:
+n = 4
+accounts [ ] =
+[["John","johnsmith@mail.com","john_newyork@mail.com"],
+["John","johnsmith@mail.com","john00@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+Output:
+[["John","john00@mail.com","john_newyork@mail.com", "johnsmith@mail.com"],
+["Mary","mary@mail.com"],
+["John","johnnybravo@mail.com"]]
+Explanation:
+The first and second John's are the same person as they have the common email "johnsmith@mail.com". 
+The third John and Mary are different people as none of their email addresses are used by other accounts.
+We could return these arrays in any order, for example, the answer [['Mary', 'mary@mail.com'], ['John', 'johnnybravo@mail.com'], 
+['John', 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com']] would still be accepted.
+
+----------------------------------------------------------------------------------------Intution--------------------------------------------------------------------------------------------------
+Disjoint Set (Union-Find) Data Structure:
+
+The DisjointSet class represents a disjoint set data structure, which is used to efficiently merge accounts.
+It employs path compression and union by size techniques to achieve efficient operations.
+Mapping Emails to Account Index:
+
+The algorithm iterates through each account and its emails.
+For each email, it checks if it's already mapped to an account index in the HashMap hm.
+If the email is not found in the map, it's added with its corresponding account index.
+If the email is already in the map, it merges the current account with the account index stored in the map using the disjoint set's unionBySize method.
+Grouping Emails by Ultimate Parent Account:
+
+After processing all accounts and emails, the algorithm groups emails by their ultimate parent account index.
+It iterates through the email-to-account map (hm) and finds the ultimate parent account index for each email using the disjoint set's findUPar method.
+Emails are added to the corresponding account list in the mails list of lists.
+Sorting and Formatting Merged Accounts:
+
+Once emails are grouped by their ultimate parent account, the algorithm formats the merged accounts.
+It removes empty accounts and sorts emails within each account list.
+Account names are added as the first element of each account list.
+Returning Merged Accounts:
+
+Finally, the algorithm returns the merged accounts stored in the mails list of lists.
+
+
+
+----------------------------------------------------------------------------------------Code----------------------------------------------------------------------------------------------------
+class DisjointSet {
+    int parent[];
+    int size[];
+    
+    // Constructor to initialize DisjointSet with given number of vertices (V)
+    DisjointSet(int V) {
+        parent = new int[V];
+        size = new int[V];
+        
+        // Initially, each vertex is its own parent and has a size of 1
+        for(int i = 0; i < V; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+    
+    // Function to find the parent of a node with path compression
+    public int findUPar(int node) {
+        if(node == parent[node])
+            return node;
+        
+        // Path compression: Set the parent of each traversed node to the ultimate parent
+        return parent[node] = findUPar(parent[node]);
+    }
+    
+    // Function to perform union by size
+    public void unionBySize(int u, int v) {
+        int uPar = findUPar(u);
+        int vPar = findUPar(v);
+        
+        // Merge smaller sized tree into larger sized tree
+        if(size[uPar] < size[vPar]) {
+            size[vPar] += size[uPar];
+            parent[uPar] = vPar;
+        } else {
+            size[uPar] += size[vPar];
+            parent[vPar] = uPar;
+        }
+    }
+}
+
+class Solution {
+    static List<List<String>> accountsMerge(List<List<String>> accounts) {
+        int n = accounts.size(); // Number of accounts
+        DisjointSet ds = new DisjointSet(n); // Initialize disjoint set
+        
+        // HashMap to map email to its corresponding account index
+        HashMap<String,Integer> hm = new HashMap<>();
+        for(int i = 0; i < n; i++) {
+            for(int j = 1; j < accounts.get(i).size(); j++) {
+                String mail = accounts.get(i).get(j);
+                if(!hm.containsKey(mail))
+                    hm.put(mail, i); // If email is not in the map, add it with account index
+                else
+                    ds.unionBySize(i, hm.get(mail)); // If email is already in the map, merge the accounts
+            }
+        }
+        
+        // List of lists to store merged emails
+        List<List<String>> mails = new ArrayList<>();
+        for(int i = 0; i < n; i++)
+            mails.add(new ArrayList<>());
+            
+        // Group emails by their ultimate parent account index
+        for(Map.Entry e : hm.entrySet()) {
+            int upNode = ds.findUPar((int)e.getValue()); // Find ultimate parent account index
+            mails.get(upNode).add((String)e.getKey()); // Add email to the corresponding account
+        }
+        
+        // Remove empty accounts and sort emails within each account
+        for(int j = 0, i = 0; i < mails.size();) {
+            if(mails.get(i).size() <= 0) {
+                mails.remove(i);
+                j++;
+            } else {
+                Collections.sort(mails.get(i)); // Sort emails within account
+                mails.get(i++).add(0, accounts.get(j++).get(0)); // Add account name as first element
+            }
+        }
+        
+        return mails; // Return merged accounts
+    }
+}
