@@ -1,0 +1,100 @@
+-----------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------
+Given a tree with n nodes where n is even. The tree is numbered from 1 to n, has n - 1 edges and is rooted at node 1. 
+Your task is to eliminate the maximum number of edges resulting in a set of disjoint trees where the number of nodes in each tree is divisible by 2.
+-----------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------
+Example 1:
+https://contribute.geeksforgeeks.org/wp-content/uploads/1466090203-2e0cf4f1be-even.png
+Input: 
+n = 10
+edges = {{2,1},{3,1},{4,3},{5,2},{6,1},{7,2},{8,6},{9,8},{10,8}}
+Output:
+2
+Explanation:
+Original tree:
+Fig 1
+
+https://contribute.geeksforgeeks.org/wp-content/uploads/image1-1.png
+After removing edge 1-3 and 1-6, each remaining component consists of even number of nodes. 
+-----------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------
+Recursive Depth-First Search (DFS):
+The code uses a recursive depth-first search approach to traverse the graph and find connected components.
+It starts from an arbitrary node and explores all its neighbors, marking them as visited and calculating the size of the component.
+
+Tracking Component Sizes:
+As it traverses the graph, it keeps track of the size of each component.
+The size of each component is calculated recursively. When a component's size is computed, if it's even, it increments the answer,
+indicating that this component needs an edge removal to make its size odd.
+
+Adjacency List Representation:
+The graph is represented using an adjacency list, which makes it efficient to traverse neighbors of each node.
+Each node maintains a list of its adjacent nodes.
+
+Main Function:
+The main function initializes the necessary variables and data structures, including the adjacency list and the array to track visited nodes.
+It iterates over each node, ensuring that all nodes in the graph are visited.
+For each unvisited node, it initiates the recursive DFS to calculate the component size and updates the answer accordingly.
+
+Returning the Answer:
+After traversing all nodes, the function returns the total count of edge removals needed to achieve the desired property of having each component with an even number of nodes.
+-----------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------
+class Solution {
+   
+    // Static variable to store the answer
+    static int ans=0;
+    
+    // Recursive function to traverse the graph and calculate component sizes
+    int help(ArrayList<ArrayList<Integer>> adj, int vis[], int node){
+        // Marking the current node as visited
+        vis[node]=1;
+        // Initializing the size of the component containing this node
+        int size=1;
+        // Iterating over the neighbors of the current node
+        for(int x : adj.get(node)){
+            // If the neighbor hasn't been visited yet
+            if(vis[x]==0){
+                // Recursively calculate the size of its component
+                int temp = help(adj, vis, x);
+                // Update the size of the current component
+                size += temp;
+                // If the size of the component is even, increment the answer
+                if(temp % 2 == 0)
+                    ans++;
+            }
+        }
+        // Return the size of the component containing the current node
+        return size;
+    }
+    
+    // Main function to find the minimum number of edge removals
+    public int minimumEdgeRemove(int n, int[][] edges) {
+        // Reset the answer
+        ans=0;
+        // Creating adjacency list to represent the graph
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+        // Building the adjacency list from the given edges
+        for(int x[] : edges){
+            adj.get(x[0]).add(x[1]);
+            adj.get(x[1]).add(x[0]);
+        }
+        // Array to keep track of visited nodes
+        int vis[] = new int[n + 1];
+        // Initializing all nodes as unvisited
+        Arrays.fill(vis, 0);
+        // Iterating over each node to find components
+        for(int i = 1; i <= n; i++){
+            // If the current node hasn't been visited yet
+            if(vis[i] == 0){
+                // Find the size of its component and process it
+                int temp = help(adj, vis, i);
+            }
+        }
+        // Return the minimum number of edge removals required
+        return ans;
+    }
+}
+
+
+
