@@ -1,0 +1,66 @@
+---------------------------------------------------------------------------------------------Question---------------------------------------------------------------------------------------------
+Given an integer array a[] of size n, find the highest element of the array. The array will either be strictly increasing or strictly increasing and then strictly decreasing.
+
+Note: a[i] != a[i+1] 
+---------------------------------------------------------------------------------------------Example---------------------------------------------------------------------------------------------
+Example 1:
+Input:
+11
+1 2 3 4 5 6 5 4 3 2 1
+Output: 
+6
+Explanation: 
+Highest element of array a[] is 6.
+
+Example 2:
+Input:
+5
+1 2 3 4 5
+Output:
+5
+Explanation: 
+Highest element of array a[] is 5.
+---------------------------------------------------------------------------------------------Intution---------------------------------------------------------------------------------------------
+Binary Search Basis:
+Binary search is generally used to find an element in a sorted list or to solve problems that can be broken down into sub-problems.
+Here, we use binary search because, in each step, we can eliminate half of the list from consideration, leading to a logarithmic time complexity.
+
+Comparison Logic:
+For any element at index mid, we compare it with its next element mid + 1.
+If a.get(mid) > a.get(mid + 1), it means that the peak element is either at mid or to the left of mid. Hence, we move the right pointer to mid.
+Otherwise, the peak element is to the right of mid, so we move the left pointer to mid + 1.
+
+Convergence:
+The loop continues until left and right converge. At this point, both pointers point to the same element, which is the peak element
+---------------------------------------------------------------------------------------------Code-----------------------------------------------------------------------------------------------
+class Solution {
+    // Method to find a peak element in the list
+    public int findPeakElement(List<Integer> a) {
+        // Get the size of the list
+        int n = a.size();
+        // Initialize two pointers for binary search
+        int left = 0;
+        int right = n - 1;
+        int mid;
+        
+        // Perform binary search
+        while (left < right) {
+            // Calculate the mid index
+            mid = left + (right - left) / 2;
+            
+            // Check if the current mid element is greater than the next element
+            if (a.get(mid) > a.get(mid + 1)) {
+                // If it is, then the peak element must be on the left side (including mid)
+                right = mid;
+            } else {
+                // If not, the peak element must be on the right side (excluding mid)
+                left = mid + 1;
+            }
+        }
+        
+        // After the loop, left and right converge to the peak element index
+        return a.get(left);
+    }
+}
+
+
