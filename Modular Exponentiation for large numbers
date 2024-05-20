@@ -1,0 +1,99 @@
+-----------------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------
+Implement pow(x, n) % M.
+In other words, for a given value of x, n, and M, find  (xn) % M.
+-----------------------------------------------------------------------------------------------Example----------------------------------------------------------------------------------------------
+Example 1:
+Input:
+x = 3, n = 2, m = 4
+Output:
+1
+Explanation:
+32 = 9. 9 % 4 = 1.
+
+Example 2:
+Input:
+x = 2, n = 6, m = 10
+Output:
+4
+Explanation:
+26 = 64. 64 % 10 = 4.
+-----------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------
+Reduce the Base:
+
+The first step is to reduce 
+𝑥
+x modulo 
+𝑚
+m. This is because the result of 
+(
+𝑥
+m
+o
+d
+ 
+ 
+𝑚
+)
+(xmodm) raised to any power modulo 
+𝑚
+m is the same as the original 
+𝑥
+x raised to that power modulo 
+𝑚
+m. This helps keep the numbers smaller and prevent overflow.
+Binary Representation of the Exponent:
+
+The key idea is to use the binary representation of the exponent 
+𝑛
+n. Each bit in the binary representation of 
+𝑛
+n determines whether we multiply the current result by the current base 
+𝑥
+x.
+Exponentiation by Squaring:
+
+We process each bit of 
+𝑛
+n from least significant to most significant. If the bit is 1, we multiply the current result by the current value of 
+𝑥
+x. Regardless of whether the bit is 0 or 1, we then square 
+𝑥
+x and reduce it modulo 
+𝑚
+m. This effectively handles the power of 2 progression in the binary representation.
+
+
+
+
+-----------------------------------------------------------------------------------------------Code------------------------------------------------------------------------------------------------
+class Solution
+{
+    public long PowMod(long x, long n, long m)
+    {
+        // Initialize result to 1. This will eventually hold the result of (x^n) % m.
+        long result = 1;
+        
+        // Update x to be x % m to handle cases where x is greater than m initially.
+        x = x % m;
+
+        // Loop until all bits of n have been processed.
+        while (n > 0) {
+            // If n is odd, multiply the current result by x and take modulo m.
+            if (n % 2 == 1) {
+                result = (result * x) % m;
+            }
+
+            // Square x and take modulo m to prevent overflow.
+            x = (x * x) % m;
+            
+            // Divide n by 2 (shift right by 1) to process the next bit.
+            n = n / 2;
+        }
+
+        // Return the final result, which is (x^n) % m.
+        return result;
+    }
+}
+
+
+
