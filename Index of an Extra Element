@@ -1,0 +1,40 @@
+------------------------------------------------------------------------------------------Question------------------------------------------------------------------------------------------------
+You have given two sorted arrays arr1[] & arr2[] of distinct elements. The first array has one element extra added in between. Return the index of the extra element.
+
+Note: 0-based indexing is followed.
+------------------------------------------------------------------------------------------Example------------------------------------------------------------------------------------------------
+Examples
+Input: n = 7, arr1[] = {2,4,6,8,9,10,12}, arr2[] = {2,4,6,8,10,12}
+Output: 4
+Explanation: In the first array, 9 is extra added and it's index is 4.
+
+Input: n = 6, arr1[] = {3,5,7,8,11,13}, arr2[] = {3,5,7,11,13}
+Output: 3
+Explanation: In the first array, 8 is extra and it's index is 3.
+Expected Time Complexity: O(log n).
+------------------------------------------------------------------------------------------Intution------------------------------------------------------------------------------------------------
+Iteration through the Arrays:
+The solution iterates through the arrays arr1 and arr2 using a for loop that runs from 0 to n-2 (since arr2 has n-1 elements).
+
+Comparison of Elements:
+For each index i, the solution compares arr1[i] with arr2[i]. If these elements are different, it means that the extra element in arr1 must be at index i.
+
+Returning the Index:
+If a mismatch is found during the iteration, the function returns the index i.
+If the loop completes without finding a mismatch, it means all elements up to n-2 are the same. Therefore, the extra element must be at the last index of arr1, which is n-1.
+------------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------
+ class Solution {
+    public int findExtra(int n, int arr1[], int arr2[]) {
+        // Iterate through the arrays
+        for (int i = 0; i < n - 1; i++) {
+            // Compare elements at the same index in both arrays
+            if (arr1[i] != arr2[i]) {
+                // If elements are different, return the index
+                return i;
+            }
+        }
+        // If all elements up to the second-to-last index are equal, return the last index
+        return n - 1;
+    }
+}
+
