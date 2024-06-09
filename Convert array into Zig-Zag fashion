@@ -1,0 +1,57 @@
+-----------------------------------------------------------------------------------------Question-------------------------------------------------------------------------------------------------
+Given an array arr of distinct elements of size n, the task is to rearrange the elements of the array in a zig-zag fashion so that the converted array should be in the below form: 
+arr[0] < arr[1]  > arr[2] < arr[3] > arr[4] < . . . . arr[n-2] < arr[n-1] > arr[n]. 
+Note: Modify the given arr[] only, If your transformation is correct, the output will be 1 else the output will be 0. 
+-----------------------------------------------------------------------------------------Example-------------------------------------------------------------------------------------------------
+Examples
+Input: n = 7, arr[] = {4, 3, 7, 8, 6, 2, 1}
+Output: 1
+Explanation:  After modification the array will look like 3 < 7 > 4 < 8 > 2 < 6 > 1, the checker in the driver code will produce 1.
+
+Input: n = 5, arr[] = {4, 7, 3, 8, 2}
+Output: 1
+Explanation: After modification the array will look like 4 < 7 > 3 < 8 > 2 hence output will be 1.
+-----------------------------------------------------------------------------------------Intution-------------------------------------------------------------------------------------------------
+Initial Concept:
+We want to create a sequence where the array looks like a zigzag, meaning for even indices i, arr[i] <= arr[i+1], and for odd indices i, arr[i] >= arr[i+1].
+
+Traversal and Condition Checking:
+We traverse the array from the beginning to the second last element. For each element, we check its index:
+Even Index (i % 2 == 0):
+For even indices, we need to ensure that the current element is less than or equal to the next element.
+If arr[i] > arr[i+1], we swap them to maintain the zigzag order.
+Odd Index (i % 2 != 0):
+For odd indices, we need to ensure that the current element is greater than or equal to the next element.
+If arr[i] < arr[i+1], we swap them to maintain the zigzag order.
+
+Swapping Elements:
+The swapping ensures that the desired condition for each index is met. After performing all necessary swaps, the array will be in the desired zigzag order.
+-----------------------------------------------------------------------------------------Code---------------------------------------------------------------------------------------------------
+
+class Solution {
+    public void zigZag(int n, int[] arr) {
+        // Iterate through the array up to the second last element
+        for (int i = 0; i < n - 1; i++) {
+            if (i % 2 == 0) { // Check if the current index is even
+                // If the current element is greater than the next element
+                if (arr[i] > arr[i + 1]) {
+                    // Swap the elements
+                    int temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
+                }
+            } else { // If the current index is odd
+                // If the current element is less than the next element
+                if (arr[i] < arr[i + 1]) {
+                    // Swap the elements
+                    int temp = arr[i];
+                    arr[i] = arr[i + 1];
+                    arr[i + 1] = temp;
+                }
+            }
+        }
+    }
+}
+
+
+
