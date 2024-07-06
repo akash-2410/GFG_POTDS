@@ -16,7 +16,8 @@ The string can be segmented as "i like".
 ---------------------------------------------------------------------------------------------------Intution----------------------------------------------------------------------------------------------------------
 Convert the list B of words into a set for efficient lookup.
 
-Initialize a boolean array dp of size A.length() + 1. The extra cell is for the empty substring at the beginning of A. Set dp[0] to true, indicating that the empty substring can always be segmented.
+Initialize a boolean array dp of size A.length() + 1. The extra cell is for the empty substring at the beginning of A. Set dp[0] to true, 
+indicating that the empty substring can always be segmented.
 
 Iterate through the characters of A from index 1 to A.length(). For each character at index i, iterate through the previous characters from index 0 to i-1.
 
